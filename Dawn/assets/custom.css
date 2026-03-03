@@ -1,0 +1,36 @@
+.header::before {
+  background-color: rgb(244 243 240 / 50%);
+  backdrop-filter: blur(15.5px);
+  -webkit-backdrop-filter: blur(15.5px);
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: -1;
+}
+
+.header {
+  background: transparent !important;
+}
+
+/* Navigation Styles */
+.header__inline-menu {
+  text-align: center;
+  width: 100%;
+  border-top: 1px solid #5e4d44;
+  padding-top: 15px;
+}
+
+.header__menu-item {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.2;
+  padding: 12px 14px;
+}
+
+.header__menu-item:hover {
+  opacity: 0.8;
+}
+
