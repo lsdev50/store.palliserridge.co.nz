@@ -1,7 +1,11 @@
-import { Component } from '@theme/component';
-import { CartAddEvent, QuantitySelectorUpdateEvent, ThemeEvents } from '@theme/events';
-import { debounce, fetchConfig, resetShimmer } from '@theme/utilities';
-import { morphSection, sectionRenderer } from '@theme/section-renderer';
+import { Component } from "@theme/component";
+import {
+  CartAddEvent,
+  QuantitySelectorUpdateEvent,
+  ThemeEvents,
+} from "@theme/events";
+import { debounce, fetchConfig, resetShimmer } from "@theme/utilities";
+import { morphSection, sectionRenderer } from "@theme/section-renderer";
 
 /**
  * A custom element that manages the quick order list section.
@@ -20,13 +24,13 @@ import { morphSection, sectionRenderer } from '@theme/section-renderer';
  */
 class QuickOrderListComponent extends Component {
   requiredRefs = [
-    'variantRows',
-    'confirmationPanel',
-    'totalInfo',
-    'errorContainer',
-    'errorText',
-    'successContainer',
-    'successText',
+    "variantRows",
+    "confirmationPanel",
+    "totalInfo",
+    "errorContainer",
+    "errorText",
+    "successContainer",
+    "successText",
   ];
 
   /** @type {AbortController|null} */
@@ -43,8 +47,14 @@ class QuickOrderListComponent extends Component {
    * @returns {number}
    */
   get currentPage() {
-    if (this.refs.paginationNav && this.refs.paginationNav.dataset.current_page) {
-      const pageNum = parseInt(this.refs.paginationNav.dataset.current_page, 10);
+    if (
+      this.refs.paginationNav &&
+      this.refs.paginationNav.dataset.current_page
+    ) {
+      const pageNum = parseInt(
+        this.refs.paginationNav.dataset.current_page,
+        10,
+      );
       if (!isNaN(pageNum)) {
         return pageNum;
       }
@@ -66,22 +76,37 @@ class QuickOrderListComponent extends Component {
   connectedCallback() {
     super.connectedCallback();
 
-    this.#debouncedHandleQuantityUpdate = debounce(this.#handleQuantityUpdate.bind(this), 300);
+    this.#debouncedHandleQuantityUpdate = debounce(
+      this.#handleQuantityUpdate.bind(this),
+      300,
+    );
     this.#boundHandleCartUpdate = this.#handleCartUpdate.bind(this);
 
-    this.addEventListener(ThemeEvents.quantitySelectorUpdate, this.#debouncedHandleQuantityUpdate);
-    document.addEventListener(ThemeEvents.cartUpdate, this.#boundHandleCartUpdate);
-    this.addEventListener('keydown', this.#handleKeyDown, true);
-    this.addEventListener('keyup', this.#handleKeyup, true);
+    this.addEventListener(
+      ThemeEvents.quantitySelectorUpdate,
+      this.#debouncedHandleQuantityUpdate,
+    );
+    document.addEventListener(
+      ThemeEvents.cartUpdate,
+      this.#boundHandleCartUpdate,
+    );
+    this.addEventListener("keydown", this.#handleKeyDown, true);
+    this.addEventListener("keyup", this.#handleKeyup, true);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
 
-    this.removeEventListener(ThemeEvents.quantitySelectorUpdate, this.#debouncedHandleQuantityUpdate);
-    document.removeEventListener(ThemeEvents.cartUpdate, this.#boundHandleCartUpdate);
-    this.removeEventListener('keydown', this.#handleKeyDown, true);
-    this.removeEventListener('keyup', this.#handleKeyup, true);
+    this.removeEventListener(
+      ThemeEvents.quantitySelectorUpdate,
+      this.#debouncedHandleQuantityUpdate,
+    );
+    document.removeEventListener(
+      ThemeEvents.cartUpdate,
+      this.#boundHandleCartUpdate,
+    );
+    this.removeEventListener("keydown", this.#handleKeyDown, true);
+    this.removeEventListener("keyup", this.#handleKeyup, true);
 
     this.#abortController?.abort();
   }
@@ -91,7 +116,10 @@ class QuickOrderListComponent extends Component {
    * @returns {target is HTMLInputElement}
    */
   #isQuantityInput(target) {
-    return target instanceof HTMLInputElement && target.matches('input[type="number"][data-cart-quantity]');
+    return (
+      target instanceof HTMLInputElement &&
+      target.matches('input[type="number"][data-cart-quantity]')
+    );
   }
 
   /**
@@ -101,17 +129,17 @@ class QuickOrderListComponent extends Component {
    * @param {KeyboardEvent} event
    */
   #handleKeyDown = (event) => {
-    if (event.key !== 'Enter' || !this.#isQuantityInput(event.target)) {
+    if (event.key !== "Enter" || !this.#isQuantityInput(event.target)) {
       return;
     }
     event.preventDefault();
 
     // Get all VISIBLE quantity inputs (exclude hidden mobile/desktop variants)
-    const allQuantityInputs = Array.from(this.querySelectorAll('input[type="number"][data-cart-quantity]')).filter(
-      (input) => {
-        return input instanceof HTMLElement && input.offsetParent !== null;
-      }
-    );
+    const allQuantityInputs = Array.from(
+      this.querySelectorAll('input[type="number"][data-cart-quantity]'),
+    ).filter((input) => {
+      return input instanceof HTMLElement && input.offsetParent !== null;
+    });
 
     if (allQuantityInputs.length <= 1) {
       return;
@@ -123,7 +151,9 @@ class QuickOrderListComponent extends Component {
     }
 
     const offset = event.shiftKey ? -1 : 1;
-    const nextIndex = (currentIndex + offset + allQuantityInputs.length) % allQuantityInputs.length;
+    const nextIndex =
+      (currentIndex + offset + allQuantityInputs.length) %
+      allQuantityInputs.length;
     const nextInput = allQuantityInputs[nextIndex];
 
     event.target.blur();
@@ -136,7 +166,10 @@ class QuickOrderListComponent extends Component {
    * @param {KeyboardEvent} event
    */
   #handleKeyup = (event) => {
-    if ((event.key === 'Tab' || event.key === 'Enter') && this.#isQuantityInput(event.target)) {
+    if (
+      (event.key === "Tab" || event.key === "Enter") &&
+      this.#isQuantityInput(event.target)
+    ) {
       this.#scrollToCenter(event.target);
     }
   };
@@ -146,8 +179,8 @@ class QuickOrderListComponent extends Component {
    */
   #scrollToCenter(element) {
     element.scrollIntoView({
-      block: 'center',
-      behavior: 'smooth',
+      block: "center",
+      behavior: "smooth",
     });
   }
 
@@ -184,13 +217,20 @@ class QuickOrderListComponent extends Component {
   async onLineItemRemove(variantId, event) {
     event.preventDefault();
 
-    const targetRow = this.refs.variantRows.find((row) => row.dataset.variantId === String(variantId));
+    const targetRow = this.refs.variantRows.find(
+      (row) => row.dataset.variantId === String(variantId),
+    );
     if (!(targetRow instanceof HTMLElement)) return;
 
     const quantityInput = targetRow.querySelector('input[type="number"]');
     if (quantityInput instanceof HTMLInputElement) {
-      quantityInput.value = '0';
-      quantityInput.dispatchEvent(new QuantitySelectorUpdateEvent(0, Number(quantityInput.dataset.cartLine)));
+      quantityInput.value = "0";
+      quantityInput.dispatchEvent(
+        new QuantitySelectorUpdateEvent(
+          0,
+          Number(quantityInput.dataset.cartLine),
+        ),
+      );
     }
   }
 
@@ -225,17 +265,20 @@ class QuickOrderListComponent extends Component {
       }
 
       const sectionIds = this.#getSectionIds();
-      const sectionsUrl = new URL(window.location.pathname, window.location.origin);
-      sectionsUrl.searchParams.set('page', this.currentPage.toString());
+      const sectionsUrl = new URL(
+        window.location.pathname,
+        window.location.origin,
+      );
+      sectionsUrl.searchParams.set("page", this.currentPage.toString());
 
       const body = JSON.stringify({
         updates: updates,
-        sections: sectionIds.join(','),
+        sections: sectionIds.join(","),
         sections_url: sectionsUrl.pathname + sectionsUrl.search,
       });
 
       const response = await fetch(Theme.routes.cart_update_url, {
-        ...fetchConfig('json', { body }),
+        ...fetchConfig("json", { body }),
         signal: this.#abortController.signal,
       });
 
@@ -252,13 +295,13 @@ class QuickOrderListComponent extends Component {
 
         document.dispatchEvent(
           new CartAddEvent(data, this.id, {
-            source: 'quick-order-remove-all',
+            source: "quick-order-remove-all",
             sections: data.sections,
-          })
+          }),
         );
       }
     } catch (error) {
-      if (error.name !== 'AbortError') {
+      if (error.name !== "AbortError") {
         resetShimmer(this);
         throw error;
       }
@@ -288,8 +331,12 @@ class QuickOrderListComponent extends Component {
     const variantId = variantRow.dataset.variantId;
     if (!variantId) return;
 
-    const quantityInput = /** @type {HTMLInputElement|null} */ (variantRow.querySelector('input[data-cart-quantity]'));
-    const currentCartQuantity = quantityInput ? parseInt(quantityInput.dataset.cartQuantity || '0') || 0 : 0;
+    const quantityInput = /** @type {HTMLInputElement|null} */ (
+      variantRow.querySelector("input[data-cart-quantity]")
+    );
+    const currentCartQuantity = quantityInput
+      ? parseInt(quantityInput.dataset.cartQuantity || "0") || 0
+      : 0;
 
     this.#clearSuccessMessage();
     this.#clearErrorMessage();
@@ -310,17 +357,20 @@ class QuickOrderListComponent extends Component {
       updates[variantId] = quantity;
 
       // Include page parameter in sections URL to maintain pagination state
-      const sectionsUrl = new URL(window.location.pathname, window.location.origin);
-      sectionsUrl.searchParams.set('page', this.currentPage.toString());
+      const sectionsUrl = new URL(
+        window.location.pathname,
+        window.location.origin,
+      );
+      sectionsUrl.searchParams.set("page", this.currentPage.toString());
 
       const body = JSON.stringify({
         updates: updates,
-        sections: this.#getSectionIds().join(','),
+        sections: this.#getSectionIds().join(","),
         sections_url: sectionsUrl.pathname + sectionsUrl.search,
       });
 
       const response = await fetch(Theme.routes.cart_update_url, {
-        ...fetchConfig('json', { body }),
+        ...fetchConfig("json", { body }),
         signal: this.#abortController.signal,
       });
 
@@ -333,8 +383,11 @@ class QuickOrderListComponent extends Component {
         this.#showErrorMessage(data.errors);
         if (this.dataset.sectionId) {
           const url = new URL(window.location.href);
-          url.searchParams.set('page', this.currentPage.toString());
-          await sectionRenderer.renderSection(this.dataset.sectionId, { cache: false, url });
+          url.searchParams.set("page", this.currentPage.toString());
+          await sectionRenderer.renderSection(this.dataset.sectionId, {
+            cache: false,
+            url,
+          });
         }
       } else {
         this.#updateSectionHTML(data);
@@ -346,14 +399,14 @@ class QuickOrderListComponent extends Component {
 
         document.dispatchEvent(
           new CartAddEvent(data, this.id, {
-            source: 'quick-order-quantity',
+            source: "quick-order-quantity",
             variantId: variantId,
             sections: data.sections,
-          })
+          }),
         );
       }
     } catch (error) {
-      if (error.name !== 'AbortError') {
+      if (error.name !== "AbortError") {
         this.#enableQuickOrderListItems();
         resetShimmer(this);
         throw error;
@@ -368,7 +421,10 @@ class QuickOrderListComponent extends Component {
   async #handleCartUpdate(event) {
     // Don't process our own events to avoid double updates
     // Check if this event came from our own quantity update
-    if (event.detail?.source === 'quick-order-quantity' && event.detail?.sourceId === this.id) {
+    if (
+      event.detail?.source === "quick-order-quantity" &&
+      event.detail?.sourceId === this.id
+    ) {
       return;
     }
 
@@ -385,7 +441,7 @@ class QuickOrderListComponent extends Component {
 
     if (this.dataset.sectionId) {
       const url = new URL(window.location.href);
-      url.searchParams.set('page', this.currentPage.toString());
+      url.searchParams.set("page", this.currentPage.toString());
 
       await sectionRenderer.renderSection(this.dataset.sectionId, {
         cache: false,
@@ -395,11 +451,11 @@ class QuickOrderListComponent extends Component {
   }
 
   #disableQuickOrderListItems() {
-    this.classList.add('quick-order-list-disabled');
+    this.classList.add("quick-order-list-disabled");
   }
 
   #enableQuickOrderListItems() {
-    this.classList.remove('quick-order-list-disabled');
+    this.classList.remove("quick-order-list-disabled");
   }
 
   /**
@@ -425,8 +481,8 @@ class QuickOrderListComponent extends Component {
    * @param {boolean} show
    */
   #toggleConfirmationPanel(show) {
-    this.refs.confirmationPanel.classList.toggle('hidden', !show);
-    this.refs.totalInfo.classList.toggle('confirmation-visible', show);
+    this.refs.confirmationPanel.classList.toggle("hidden", !show);
+    this.refs.totalInfo.classList.toggle("confirmation-visible", show);
   }
 
   /**
@@ -435,14 +491,14 @@ class QuickOrderListComponent extends Component {
    */
   #showErrorMessage(message) {
     this.refs.errorText.textContent = message;
-    this.refs.errorContainer.classList.remove('hidden');
+    this.refs.errorContainer.classList.remove("hidden");
   }
 
   /**
    * Hides the error messages
    */
   #clearErrorMessage() {
-    this.refs.errorContainer.classList.add('hidden');
+    this.refs.errorContainer.classList.add("hidden");
   }
 
   /**
@@ -452,17 +508,23 @@ class QuickOrderListComponent extends Component {
   #showSuccessMessage(quantityAdded) {
     this.#clearErrorMessage();
 
-    const oneItemText = Theme?.translations?.items_added_to_cart_one || '1 item added to cart';
-    const itemsText = Theme?.translations?.items_added_to_cart_other || '{{ count }} items added to cart';
+    const oneItemText =
+      Theme?.translations?.items_added_to_cart_one || "1 item added to cart";
+    const itemsText =
+      Theme?.translations?.items_added_to_cart_other ||
+      "{{ count }} items added to cart";
 
-    const message = quantityAdded === 1 ? oneItemText : itemsText.replace('{{ count }}', quantityAdded.toString());
+    const message =
+      quantityAdded === 1
+        ? oneItemText
+        : itemsText.replace("{{ count }}", quantityAdded.toString());
 
     this.refs.successText.textContent = message;
-    this.refs.successContainer.classList.remove('hidden');
+    this.refs.successContainer.classList.remove("hidden");
   }
 
   #clearSuccessMessage() {
-    this.refs.successContainer.classList.add('hidden');
+    this.refs.successContainer.classList.add("hidden");
   }
 
   /**
@@ -471,11 +533,14 @@ class QuickOrderListComponent extends Component {
    */
   #applyShimmerEffects(variantIds) {
     for (const variantId of variantIds) {
-      const variantRow = this.refs.variantRows.find((row) => row.dataset.variantId === String(variantId));
+      const variantRow = this.refs.variantRows.find(
+        (row) => row.dataset.variantId === String(variantId),
+      );
       if (variantRow) {
-        const variantTotal = /** @type {import('./utilities').TextComponent|null} */ (
-          variantRow.querySelector('.variant-item__total-price')
-        );
+        const variantTotal =
+          /** @type {import('./utilities').TextComponent|null} */ (
+            variantRow.querySelector(".variant-item__total-price")
+          );
         variantTotal?.shimmer();
       }
     }
@@ -490,7 +555,7 @@ class QuickOrderListComponent extends Component {
     // Defer layout read until scroll action to batch with other layout work
     requestAnimationFrame(() => {
       const top = this.getBoundingClientRect().top;
-      window.scrollTo({ top: top + window.scrollY, behavior: 'smooth' });
+      window.scrollTo({ top: top + window.scrollY, behavior: "smooth" });
     });
   }
 
@@ -519,10 +584,15 @@ class QuickOrderListComponent extends Component {
     }
 
     // Also include all cart-items-component sections (like cart drawer) for smooth updates
-    const cartItemsComponents = document.querySelectorAll('cart-items-component');
+    const cartItemsComponents = document.querySelectorAll(
+      "cart-items-component",
+    );
     for (const component of cartItemsComponents) {
       if (!(component instanceof HTMLElement)) continue;
-      if (component.dataset.sectionId && !sectionIds.includes(component.dataset.sectionId)) {
+      if (
+        component.dataset.sectionId &&
+        !sectionIds.includes(component.dataset.sectionId)
+      ) {
         sectionIds.push(component.dataset.sectionId);
       }
     }
@@ -531,6 +601,6 @@ class QuickOrderListComponent extends Component {
   }
 }
 
-if (!customElements.get('quick-order-list-component')) {
-  customElements.define('quick-order-list-component', QuickOrderListComponent);
+if (!customElements.get("quick-order-list-component")) {
+  customElements.define("quick-order-list-component", QuickOrderListComponent);
 }

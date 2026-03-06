@@ -1,0 +1,35 @@
+{
+  "name": "palliserridge",
+  "version": "1.0.0",
+  "description": "Dwell theme customization based on Figma designs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lsdev50/store.palliserridge.co.nz.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "prettier": "prettier --write \"**/*.{js,css,scss,liquid,json}\"",
+    "prettier:check": "prettier --check \"**/*.{js,css,scss,liquid,json}\"",
+    "shopify": "shopify",
+    "dev": "shopify theme dev",
+    "pull": "shopify theme pull",
+    "push": "shopify theme push",
+    "push:preview": "shopify theme push --unpublished",
+    "check": "shopify theme check",
+    "save": "npm run prettier && git add . && git commit -m 'update' && git push",
+    "theme:list": "shopify theme list",
+    "theme:publish": "shopify theme publish"
+  },
+  "devDependencies": {
+    "@shopify/prettier-plugin-liquid": "^1.5.0",
+    "prettier": "^3.2.5"
+  },
+  "prettier": {
+    "plugins": [
+      "@shopify/prettier-plugin-liquid"
+    ]
+  }
+}
