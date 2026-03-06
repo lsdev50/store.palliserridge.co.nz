@@ -1,0 +1,5 @@
+# Exclude auto-generated Shopify JSON files
+sections/*.json
+templates/*.json
+locales/*.json
+config/*.json
