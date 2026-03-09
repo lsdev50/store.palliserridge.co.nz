@@ -17,7 +17,7 @@
         "announcement_KMAGKG": {
           "type": "_announcement",
           "settings": {
-            "text": "Shop the bedroom event - on now!",
+            "text": "100% NZ lambswool brought to you from our carbon-neutral farm.",
             "link": "shopify://collections/all",
             "font": "var(--font-accent--family)",
             "font_size": "0.75rem",
