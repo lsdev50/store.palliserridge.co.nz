@@ -76,7 +76,6 @@
         "main_heading": "Welcome To Palliser Ridge",
         "heading_size": "h2",
         "sub_heading": "Pirinoa | South Wairarapa | New Zealand",
-        "subheading_size": "h3",
         "main_text": "<p>Experience the authentic New Zealand rural lifestyle at our working sheep station. Our family has been farming this land for generations, and we're passionate about sharing our story with visitors.</p><p>From rolling hills to pristine coastline, discover the beauty of rural New Zealand.</p>",
         "left_text": "Pirinoa Station is a 5th generation family owned and operated sheep and beef station located on the stunning south coast of the Wairarapa.",
         "button_text": "Contact us",
@@ -96,7 +95,7 @@
         "enable_animation": true,
         "animation_delay": "0.4s",
         "padding-block-start": 100,
-        "padding-block-end": 100
+        "padding-block-end": 50
       }
     },
     "collection_list_PHweEy": {
@@ -113,7 +112,7 @@
             "align_baseline": false,
             "horizontal_alignment_flex_direction_column": "flex-start",
             "vertical_alignment_flex_direction_column": "space-between",
-            "gap": 12,
+            "gap": 20,
             "width": "fill",
             "custom_width": 100,
             "width_mobile": "fill",
@@ -196,14 +195,21 @@
           "settings": {
             "placement": "below_image",
             "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "collection_card_gap": 8,
+            "vertical_alignment": "flex-end",
+            "collection_card_gap": 10,
             "inherit_color_scheme": true,
             "color_scheme": "",
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
-            "border_radius": 0
+            "border_radius": 0,
+            "show_icon": true,
+            "icon_type": "image",
+            "icon": "arrow",
+            "image_upload": "shopify://shop_images/arrow.svg",
+            "icon_width": 50,
+            "icon_background_color": "#5e4d44",
+            "icon_border_radius": 50
           },
           "blocks": {
             "collection_title_btkpww": {
@@ -259,7 +265,13 @@
       ],
       "name": "t:names.collections_carousel",
       "settings": {
-        "collection_list": [],
+        "collection_list": [
+          "palliser-ridge-yarn",
+          "palliser-ridge-beanies-scarves",
+          "palliser-ridge-yarn-1",
+          "palliser-ridge-luxury-blankets",
+          "palliser-ridge-baby-range"
+        ],
         "layout_type": "grid",
         "carousel_on_mobile": true,
         "columns": 5,
@@ -269,10 +281,262 @@
         "bento_gap": 8,
         "rows_gap": 20,
         "max_collections": 4,
-        "icons_style": "none",
+        "icons_style": "arrow",
         "icons_shape": "circle",
+        "section_width": "full-width",
+        "gap": 50,
+        "align": "baseline",
+        "color_scheme": "scheme-4",
+        "padding-block-start": 50,
+        "padding-block-end": 100,
+        "padding-inline-start": 100,
+        "padding-inline-end": 100
+      }
+    },
+    "hero_DNPz8i": {
+      "type": "hero",
+      "blocks": {
+        "text_Bhh6FU": {
+          "type": "text",
+          "settings": {
+            "text": "<h2>Natural Homewares</h2>",
+            "width": "fit-content",
+            "max_width": "narrow",
+            "alignment": "left",
+            "type_preset": "h1",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground-heading)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_gVC3KM": {
+          "type": "text",
+          "settings": {
+            "text": "<p>New Zealand Made Gifts & Furnishings</p>",
+            "width": "fit-content",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "paragraph",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 15,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "button_ydwE9y": {
+          "type": "button",
+          "name": "t:names.button",
+          "settings": {
+            "label": "READ MORE",
+            "link": "shopify://collections/all",
+            "open_in_new_tab": false,
+            "style_class": "button",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_Bhh6FU",
+        "text_gVC3KM",
+        "button_ydwE9y"
+      ],
+      "name": "t:names.hero",
+      "settings": {
+        "media_type_1": "image",
+        "image_1": "shopify://shop_images/call_to_action.jpg",
+        "media_type_2": "image",
+        "stack_media_on_mobile": false,
+        "custom_mobile_media": false,
+        "media_type_1_mobile": "image",
+        "media_type_2_mobile": "image",
+        "link": "",
+        "open_in_new_tab": false,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 20,
         "section_width": "page-width",
-        "gap": 12,
+        "section_height": "small",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-1",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "gradient",
+        "gradient_direction": "to top",
+        "blurred_reflection": false,
+        "reflection_opacity": 75,
+        "padding-block-start": 40,
+        "padding-block-end": 40
+      }
+    },
+    "product_recommendations_R3yQ4G": {
+      "type": "product-recommendations",
+      "blocks": {
+        "text_HkJgjr": {
+          "type": "text",
+          "name": "t:names.header",
+          "settings": {
+            "text": "<h2>Best-Selling Throws</h2>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "center",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "static-product-card": {
+          "type": "_product-card",
+          "name": "t:names.product_card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 4,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "product_card_gallery_nCGEey": {
+              "type": "_product-card-gallery",
+              "name": "t:names.product_card_media",
+              "settings": {
+                "image_ratio": "adapt",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "product_title_CyLHrY": {
+              "type": "product-title",
+              "name": "t:names.product_title",
+              "settings": {
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 4,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "price_3kcQVa": {
+              "type": "price",
+              "name": "t:names.product_price",
+              "settings": {
+                "show_sale_price_first": true,
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "h6",
+                "width": "100%",
+                "alignment": "left",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "color": "var(--color-foreground)",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "product_card_gallery_nCGEey",
+            "product_title_CyLHrY",
+            "price_3kcQVa"
+          ]
+        }
+      },
+      "block_order": [
+        "text_HkJgjr"
+      ],
+      "name": "t:names.product_recommendations",
+      "settings": {
+        "product": "{{ closest.product }}",
+        "recommendation_type": "related",
+        "layout_type": "grid",
+        "carousel_on_mobile": false,
+        "max_products": 4,
+        "columns": 4,
+        "mobile_columns": "2",
+        "columns_gap": 12,
+        "rows_gap": 24,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "gap": 28,
         "color_scheme": "scheme-4",
         "padding-block-start": 100,
         "padding-block-end": 100
@@ -282,6 +546,8 @@
   "order": [
     "hero_78kwXc",
     "welcome_WUqx9w",
-    "collection_list_PHweEy"
+    "collection_list_PHweEy",
+    "hero_DNPz8i",
+    "product_recommendations_R3yQ4G"
   ]
 }

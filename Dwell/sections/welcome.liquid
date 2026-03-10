@@ -37,7 +37,7 @@
   {% endif %}
 
   {% if section.settings.sub_heading != blank %}
-    <h3 class="welcome-section__sub-heading {{ section.settings.subheading_size }}">
+    <h3 class="welcome-section__sub-heading">
       {{ section.settings.sub_heading }}
     </h3>
   {% endif %}
@@ -169,9 +169,10 @@
 .welcome-section__sub-heading {
   margin: 0;
   opacity: 0.8;
-  font-family: var(--welcome-heading-font);
+  font-family: var(--welcome-text-font);
   line-height: 1.3;
   color: currentColor;
+  font-size: 18px;
 }
 
 .welcome-section__button {
@@ -242,6 +243,12 @@
     gap: 1rem;
   }
 
+  .welcome-section--equal .welcome-section__grid,
+  .welcome-section--content-left .welcome-section__grid,
+  .welcome-section--content-right .welcome-section__grid {
+    grid-template-columns: 1fr;
+  }
+
   .welcome-section__images {
     grid-template-columns: 1fr;
     gap: 1.5rem;
@@ -292,18 +299,6 @@
       "id": "sub_heading",
       "label": "Subheading",
       "default": "Pirinoa | South Wairarapa | New Zealand"
-    },
-    {
-      "type": "select",
-      "id": "subheading_size",
-      "label": "Subheading size",
-      "options": [
-        { "value": "h2", "label": "H2" },
-        { "value": "h3", "label": "H3" },
-        { "value": "h4", "label": "H4" },
-        { "value": "h5", "label": "H5" }
-      ],
-      "default": "h3"
     },
     {
       "type": "richtext",
@@ -503,7 +498,6 @@
         "main_heading": "Welcome To Palliser Ridge",
         "heading_size": "h2",
         "sub_heading": "Pirinoa | South Wairarapa | New Zealand",
-        "subheading_size": "h3",
         "button_text": "Contact us",
         "left_text": "Pirinoa Station is a 5th generation family owned and operated sheep and beef station located on the stunning south coast of the Wairarapa.",
         "column_ratio": "equal",

@@ -10,14 +10,27 @@
 
 {% comment %} Render using unified resource image component {% endcomment %}
 {% comment %} Note: image_source auto-determined from closest.collection for collections {% endcomment %}
-{% render 'resource-image',
-  content_type: 'collections',
-  image_source: blank,
-  parent_block_id: parent_block_id,
-  block_settings: block.settings,
-  section_settings: section.settings,
-  block_attributes: block.shopify_attributes
-%}
+<div class="collection-card__image-wrapper">
+  {% render 'resource-image',
+    content_type: 'collections',
+    image_source: closest.collection,
+    parent_block_id: parent_block_id,
+    block_settings: block.settings,
+    section_settings: section.settings,
+    block_attributes: block.shopify_attributes
+  %}
+  
+  {% if icon_settings.show_icon %}
+    <div class="collection-card__icon" style="background-color: {{ icon_settings.icon_background_color }}; border-radius: {{ icon_settings.icon_border_radius }}px; width: {{ icon_settings.icon_width }}px; height: {{ icon_settings.icon_width }}px;">
+      {% render 'icon-or-image',
+        icon: icon_settings.icon,
+        image_upload: icon_settings.image_upload,
+        width: icon_settings.icon_width,
+        class_name: 'collection-card__icon-media'
+      %}
+    </div>
+  {% endif %}
+</div>
 
 {% schema %}
 {
@@ -56,14 +69,15 @@
     {
       "type": "checkbox",
       "id": "toggle_overlay",
-      "label": "t:settings.media_overlay"
+      "label": "t:settings.media_overlay",
+      "default": true
     },
     {
       "type": "color",
       "id": "overlay_color",
       "label": "t:settings.overlay_color",
       "alpha": true,
-      "default": "#00000026",
+      "default": "#00000050",
       "visible_if": "{{ block.settings.toggle_overlay }}"
     },
     {

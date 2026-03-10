@@ -27,6 +27,7 @@
   style="
     {% render 'spacing-style', settings: section.settings %}
     {% render 'gap-style', value: section.settings.gap %}
+    --resource-list-align: {{ section.settings.align }};
   "
   data-testid="collection-list"
 >
@@ -68,6 +69,7 @@
     test_id: 'collections-list-grid'
   %}
 </div>
+
 
 {% schema %}
 {
@@ -322,6 +324,34 @@
       "default": 12
     },
     {
+      "type": "select",
+      "id": "align",
+      "label": "Align",
+      "options": [
+        {
+          "value": "baseline",
+          "label": "Baseline"
+        },
+        {
+          "value": "stretch",
+          "label": "Stretch"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "start",
+          "label": "Start"
+        },
+        {
+          "value": "end",
+          "label": "End"
+        }
+      ],
+      "default": "baseline"
+    },
+    {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "t:settings.color_scheme",
@@ -345,6 +375,26 @@
       "type": "range",
       "id": "padding-block-end",
       "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "Left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "Right",
       "min": 0,
       "max": 100,
       "step": 1,
@@ -885,3 +935,51 @@
   ]
 }
 {% endschema %}
+
+{% stylesheet %}
+.collection-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.collection-card__image-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.collection-card__icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-radius 0.3s ease, opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+}
+
+.collection-card:hover .overlay,
+.collection-card:hover .collection-card__icon,
+.collection-card:hover .collection-card__image .overlay {
+  opacity: 1;
+  border-radius: 0;
+}
+
+.collection-card__icon-media {
+  width: 100%;
+  height: 100%;
+}
+
+.resource-list--grid {
+  align-items: var(--resource-list-align, baseline);
+}
+
+.collection-card__image .overlay {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+{% endstylesheet %}
