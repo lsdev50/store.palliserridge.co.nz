@@ -1,0 +1,595 @@
+{% comment %}
+    sections.upcoming-events.liquid
+{% endcomment %}
+
+{%- liquid
+  assign desktop_cols = section.settings.desktop_columns
+  assign mobile_cols = section.settings.mobile_columns | default: "1"
+  assign header_alignment_class = 'upcoming-events--header-' | append: section.settings.content_alignment
+  assign button_alignment_class = 'upcoming-events--button-' | append: section.settings.button_alignment
+  assign item_title_alignment_class = 'upcoming-events--item-title-' | append: section.settings.item_title_alignment
+-%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  class="
+    section
+    upcoming-events
+    {{ header_alignment_class }}
+    {{ button_alignment_class }}
+    {{ item_title_alignment_class }}
+    spacing-style
+    gap-style
+    section--{{ section.settings.section_width }}
+    color-{{ section.settings.color_scheme }}
+  "
+  style="
+    --padding-block-start: {{ section.settings.padding_block_start }}px;
+    --padding-block-end: {{ section.settings.padding_block_end }}px;
+    --padding-inline-start: {{ section.settings.padding_inline_start }}px;
+    --padding-inline-end: {{ section.settings.padding_inline_end }}px;
+    --padding-block-start-mobile: {{ section.settings.padding_block_start_mobile }}px;
+    --padding-block-end-mobile: {{ section.settings.padding_block_end_mobile }}px;
+    --padding-inline-start-mobile: {{ section.settings.padding_inline_start_mobile }}px;
+    --padding-inline-end-mobile: {{ section.settings.padding_inline_end_mobile }}px;
+    {% render 'gap-style', value: section.settings.gap, name: 'upcoming-events-gap' %}
+    --upcoming-events-desktop-cols: {{ desktop_cols }};
+    --upcoming-events-mobile-cols: {{ mobile_cols }};
+    --upcoming-events-heading-font: var(--font-{{ section.settings.heading_font }}--family, var(--font-heading-family));
+    --upcoming-events-text-font: var(--font-{{ section.settings.text_font }}--family, var(--font-body-family));
+  "
+  data-section-id="{{ section.id }}"
+>
+  {%- if section.settings.title != blank -%}
+    <div class="upcoming-events__header">
+      <h2 class="upcoming-events__title">
+        {{ section.settings.title | escape }}
+      </h2>
+    </div>
+  {%- endif -%}
+
+  {% assign events = shop.metaobjects.events.values %}
+  <div class="upcoming-events__list">
+    {% for event in events limit: 4 %}
+      <div class="upcoming-events__item">
+        <a href="{{ event.url }}" class="upcoming-events__item-link" target="_blank" rel="noopener">
+          {% if event.image %}
+            <img 
+              class="upcoming-events__item-image" 
+              src="{{ event.image | image_url: width: 800 }}" 
+              alt="{{ event.title | escape }}" 
+              width="100%" 
+              height="auto" 
+              loading="lazy"
+            />
+          {% endif %}
+          <p class="upcoming-events__item-title">{{ event.title | escape }}</p>
+        </a>
+      </div>
+    {% else %}
+      <p class="upcoming-events__no-events">No events found. Add some in Settings → Custom data → Events</p>
+    {% endfor %}
+  </div>
+
+  {% if section.settings.button != blank and section.settings.button_link != blank %}
+    <div class="upcoming-events__button">
+      <a href="{{ section.settings.button_link }}" class="button button--primary">
+        {{ section.settings.button }}
+      </a>
+    </div>
+  {% endif %}
+</div>
+
+<script>
+  function initializeAnimations() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, index * 100);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    document.querySelectorAll('.upcoming-events__item').forEach((item, index) => {
+      item.classList.remove('visible');
+      observer.observe(item);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initializeAnimations);
+  
+  // Reinitialize when theme editor updates
+  document.addEventListener('shopify:section:load', initializeAnimations);
+  document.addEventListener('shopify:section:reorder', initializeAnimations);
+</script>
+
+{% stylesheet %}
+  .upcoming-events__list {
+    display: grid;
+    grid-template-columns: repeat(var(--upcoming-events-desktop-cols, 4), 1fr);
+    gap: var(--upcoming-events-gap, 24px);
+  }
+
+  .upcoming-events__header {
+    margin-block-end: clamp(2rem, 4vw, 3rem);
+  }
+
+  .upcoming-events--header-left .upcoming-events__header {
+    text-align: left;
+    justify-self: left;
+  }
+
+  .upcoming-events--header-center .upcoming-events__header {
+    text-align: center;
+    justify-self: center;
+  }
+
+  .upcoming-events--header-right .upcoming-events__header {
+    text-align: right;
+    justify-self: right;
+  }
+
+  .upcoming-events__title {
+    margin: 0 0 1rem;
+    line-height: 1.2;
+    font-family: var(--upcoming-events-heading-font);
+    color: currentColor;
+  }
+
+  .upcoming-events__item-title {
+    font-family: var(--upcoming-events-text-font);
+    line-height: 1.4;
+    color: currentColor;
+  }
+
+  .upcoming-events--item-title-left .upcoming-events__item-title {
+    text-align: left;
+  }
+
+  .upcoming-events--item-title-center .upcoming-events__item-title {
+    text-align: center;
+  }
+
+  .upcoming-events--item-title-right .upcoming-events__item-title {
+    text-align: right;
+  }
+
+  .upcoming-events__button {
+    margin-block-start: 2rem;
+    justify-self: center;
+  }
+
+  .upcoming-events--button-left .upcoming-events__button {
+    justify-self: left;
+  }
+
+  .upcoming-events--button-center .upcoming-events__button {
+    justify-self: center;
+  }
+
+  .upcoming-events--button-right .upcoming-events__button {
+    justify-self: right;
+  }
+
+  .upcoming-events__item {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .upcoming-events__item:nth-child(1) {
+    transition-delay: 0.1s;
+  }
+
+  .upcoming-events__item:nth-child(2) {
+    transition-delay: 0.2s;
+  }
+
+  .upcoming-events__item:nth-child(3) {
+    transition-delay: 0.3s;
+  }
+
+  .upcoming-events__item:nth-child(4) {
+    transition-delay: 0.4s;
+  }
+
+  .upcoming-events__item.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .upcoming-events__item-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .upcoming-events__item-link:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  .upcoming-events__item-image {
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .upcoming-events__item-title {
+    margin: 0;
+    padding: 1rem;
+    color: var(--color-foreground);
+  }
+
+  .upcoming-events__no-events {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 2rem;
+    font-style: italic;
+    opacity: 0.7;
+  }
+
+  .upcoming-events__button {
+    margin-block-start: clamp(2rem, 4vw, 3rem);
+    text-align: center;
+    justify-self: center;
+  }
+
+  /* Responsive adjustments */
+  @media screen and (max-width: 1200px) {
+    .upcoming-events__list {
+      gap: clamp(1rem, 2.5vw, 2rem);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .upcoming-events__list {
+      grid-template-columns: repeat(var(--upcoming-events-mobile-cols, 1), 1fr);
+      gap: 1.5rem;
+    }
+
+    .upcoming-events__header {
+      margin-block-end: clamp(1.5rem, 4vw, 2.5rem);
+    }
+
+    .upcoming-events__item-title {
+      font-size: var(--upcoming-events-text-size, 16px);
+      padding: clamp(0.75rem, 2vw, 1rem);
+    }
+
+    /* Mobile padding overrides */
+    .upcoming-events {
+      padding-block-start: var(--padding-block-start-mobile, var(--padding-block-start, 24px));
+      padding-block-end: var(--padding-block-end-mobile, var(--padding-block-end, 24px));
+      padding-inline-start: var(--padding-inline-start-mobile, var(--padding-inline-start, 0px));
+      padding-inline-end: var(--padding-inline-end-mobile, var(--padding-inline-end, 0px));
+    }
+
+    .upcoming-events__button {
+      margin-block-start: clamp(1.5rem, 3vw, 2rem);
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .upcoming-events__item-title {
+      padding: clamp(0.5rem, 2vw, 0.75rem);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Upcoming Events",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer", "aside"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Upcoming Events"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "options": [
+        {
+          "value": "heading",
+          "label": "Heading"
+        },
+        {
+          "value": "body",
+          "label": "Body"
+        },
+        {
+          "value": "accent",
+          "label": "Accent"
+        }
+      ],
+      "default": "heading"
+    },
+    {
+      "type": "select",
+      "id": "text_font",
+      "label": "Text font",
+      "options": [
+        {
+          "value": "heading",
+          "label": "Heading"
+        },
+        {
+          "value": "body",
+          "label": "Body"
+        },
+        {
+          "value": "accent",
+          "label": "Accent"
+        }
+      ],
+      "default": "body"
+    },
+    {
+      "type": "header",
+      "content": "Events"
+    },
+    {
+      "type": "paragraph",
+      "content": "Shows latest 4 events from Events metaobject"
+    },
+    {
+      "type": "select",
+      "id": "item_title_alignment",
+      "label": "Event title alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_columns",
+      "label": "Desktop columns",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "label": "Mobile columns",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap between items",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page width"
+        },
+        {
+          "value": "full-width",
+          "label": "Full width"
+        }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button",
+      "label": "Button text",
+      "default": "View All Events"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_alignment",
+      "label": "Button alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Color"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Desktop padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_block_start",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_block_end",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_inline_start",
+      "label": "Left padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_inline_end",
+      "label": "Right padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Mobile padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_block_start_mobile",
+      "label": "Top padding (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_block_end_mobile",
+      "label": "Bottom padding (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_inline_start_mobile",
+      "label": "Left padding (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_inline_end_mobile",
+      "label": "Right padding (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Upcoming Events",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

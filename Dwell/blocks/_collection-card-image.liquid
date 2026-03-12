@@ -19,9 +19,12 @@
     section_settings: section.settings,
     block_attributes: block.shopify_attributes
   %}
-  
+
   {% if icon_settings.show_icon %}
-    <div class="collection-card__icon" style="background-color: {{ icon_settings.icon_background_color }}; border-radius: {{ icon_settings.icon_border_radius }}px; width: {{ icon_settings.icon_width }}px; height: {{ icon_settings.icon_width }}px;">
+    <div
+      class="collection-card__icon"
+      style="background-color: {{ icon_settings.icon_background_color }}; border-radius: {{ icon_settings.icon_border_radius }}px; width: {{ icon_settings.icon_width }}px; height: {{ icon_settings.icon_width }}px;"
+    >
       {% render 'icon-or-image',
         icon: icon_settings.icon,
         image_upload: icon_settings.image_upload,

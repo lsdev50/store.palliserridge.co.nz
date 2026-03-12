@@ -1,0 +1,771 @@
+{% comment %}
+  Section: range-boxes.liquid
+  Description: A repeatable card/box grid section with title, text, and button per block.
+  Supports: multi-column grid, mobile column override, background/border/color scheme,
+            font settings, border radius, and unlimited blocks (default 2).
+{% endcomment %}
+
+{%- liquid
+  assign desktop_cols = section.settings.desktop_columns
+  assign mobile_cols = section.settings.mobile_columns | default: "1"
+  assign header_alignment_class = 'range-boxes--header-' | append: section.settings.header_alignment
+-%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  class="
+    section
+    range-boxes
+    {{ header_alignment_class }}
+    spacing-style
+    gap-style
+    section--{{ section.settings.section_width }}
+    color-{{ section.settings.color_scheme }}
+  "
+  style="
+    --padding-block-start: {{ section.settings.padding-block-start }}px;
+    --padding-block-end: {{ section.settings.padding-block-end }}px;
+    --padding-inline-start: {{ section.settings.padding-inline-start }}px;
+    --padding-inline-end: {{ section.settings.padding-inline-end }}px;
+    --padding-block-start-mobile: {{ section.settings.padding-block-start-mobile }}px;
+    --padding-block-end-mobile: {{ section.settings.padding-block-end-mobile }}px;
+    --padding-inline-start-mobile: {{ section.settings.padding-inline-start-mobile }}px;
+    --padding-inline-end-mobile: {{ section.settings.padding-inline-end-mobile }}px;
+    {% render 'gap-style', value: section.settings.gap, name: 'range-boxes-gap' %}
+    --range-boxes-desktop-cols: {{ desktop_cols }};
+    --range-boxes-mobile-cols: {{ mobile_cols }};
+    --range-boxes-title-size: {{ section.settings.title_font_size }}px;
+  "
+  data-section-id="{{ section.id }}"
+>
+  {%- if section.settings.section_heading != blank -%}
+    <div class="range-boxes__header">
+      <{{ section.settings.heading_size }} class="range-boxes__section-heading">
+        {{ section.settings.section_heading | escape }}
+      </{{ section.settings.heading_size }}>
+    </div>
+  {%- endif -%}
+
+  <div class="range-boxes__grid">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign card_scheme = block.settings.card_color_scheme
+        if card_scheme == blank
+          assign card_scheme = section.settings.card_color_scheme
+        endif
+        assign border_style = block.settings.card_border_style
+        assign card_shadow = block.settings.card_shadow
+      -%}
+
+      <div
+        class="
+          range-boxes__card
+          color-{{ card_scheme }}
+          {% if border_style != 'none' %}range-boxes__card--bordered{% endif %}
+          {% if card_shadow %}range-boxes__card--shadow{% endif %}
+        "
+        style="
+          --range-boxes-card-padding-block: {{ block.settings.card_padding_vertical }}px;
+          --range-boxes-card-padding-inline: {{ block.settings.card_padding_horizontal }}px;
+          --range-boxes-card-padding-block-mobile: {{ block.settings.card_padding_vertical_mobile }}px;
+          --range-boxes-card-padding-inline-mobile: {{ block.settings.card_padding_horizontal_mobile }}px;
+          --range-boxes-border-radius: {{ block.settings.card_border_radius }}px;
+          --range-boxes-border-width: {{ block.settings.card_border_width }}px;
+          --range-boxes-text-size: {{ block.settings.text_font_size }}px;
+          --range-boxes-text-size-mobile: {{ block.settings.text_font_size_mobile }}px;
+          text-align: {{ block.settings.content_alignment }};
+          justify-content: {{ block.settings.vertical_alignment }};
+          min-height: {{ block.settings.min_height }}px;
+          {% if block.settings.enable_background_image and block.settings.background_image %}
+          background-image: url('{{ block.settings.background_image | image_url }}');
+          background-size: {{ block.settings.background_size }};
+          background-position: {{ block.settings.background_position }};
+          background-repeat: no-repeat;
+          {% endif %}
+        "
+        {{ block.shopify_attributes }}
+      >
+        {%- comment -%} Title {%- endcomment -%}
+        {%- if block.settings.title != blank -%}
+          <{{ block.settings.heading_size }} class="range-boxes__card-title">
+            {{ block.settings.title | escape }}
+          </{{ block.settings.heading_size }}>
+        {%- endif -%}
+
+        {%- comment -%} Body text {%- endcomment -%}
+        {%- if block.settings.text != blank -%}
+          <div class="range-boxes__card-text rte">
+            {{ block.settings.text }}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Button {%- endcomment -%}
+        {%- if block.settings.button_label != blank and block.settings.button_link != blank -%}
+          <div class="range-boxes__card-button-wrapper">
+            <a
+              href="{{ block.settings.button_link }}"
+              class="button {{ block.settings.button_style }}"
+              {% if block.settings.button_open_new_tab %}
+                target="_blank" rel="noopener noreferrer"
+              {% endif %}
+            >
+              {{ block.settings.button_label | escape }}
+            </a>
+          </div>
+        {%- elsif block.settings.button_label != blank -%}
+          <div class="range-boxes__card-button-wrapper">
+            <span class="button {{ block.settings.button_style }}">
+              {{ block.settings.button_label | escape }}
+            </span>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .range-boxes__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--range-boxes-desktop-cols, 2), 1fr);
+    gap: var(--range-boxes-gap, 24px);
+  }
+
+  .range-boxes__header {
+    margin-block-end: 40px;
+  }
+
+  .range-boxes--header-left .range-boxes__header {
+    text-align: left;
+  }
+
+  .range-boxes--header-center .range-boxes__header {
+    text-align: center;
+  }
+
+  .range-boxes--header-right .range-boxes__header {
+    text-align: right;
+  }
+
+  .range-boxes__section-heading {
+    margin: 0 0 12px;
+  }
+
+  .range-boxes__card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-block: var(--range-boxes-card-padding-block, 32px);
+    padding-inline: var(--range-boxes-card-padding-inline, 32px);
+    border-radius: var(--range-boxes-border-radius, 0px);
+    overflow: hidden;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .range-boxes__card--bordered {
+    border: var(--range-boxes-border-width, 1px) solid currentColor;
+    border-color: rgba(var(--color-foreground), 0.15);
+  }
+
+  .range-boxes__card--shadow {
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  .range-boxes__card--shadow:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  }
+
+  .range-boxes__card-icon {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .range-boxes__card-title {
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .range-boxes__card-text {
+    font-size: var(--range-boxes-text-size, inherit);
+  }
+
+  .range-boxes__card-button-wrapper {
+    padding-block-start: 8px;
+  }
+
+  /* Mobile overrides */
+  @media screen and (max-width: 749px) {
+    .range-boxes__grid {
+      grid-template-columns: repeat(var(--range-boxes-mobile-cols, 1), 1fr);
+    }
+
+    /* Mobile padding overrides */
+    .range-boxes {
+      padding-block-start: var(--padding-block-start-mobile, var(--padding-block-start, 24px));
+      padding-block-end: var(--padding-block-end-mobile, var(--padding-block-end, 24px));
+      padding-inline-start: var(--padding-inline-start-mobile, var(--padding-inline-start, 0px));
+      padding-inline-end: var(--padding-inline-end-mobile, var(--padding-inline-end, 0px));
+    }
+
+    /* Mobile box padding overrides */
+    .range-boxes__card {
+      padding-block: var(--range-boxes-card-padding-block, var(--card-padding-vertical-mobile, 24px));
+      padding-inline: var(--range-boxes-card-padding-inline, var(--card-padding-horizontal-mobile, 24px));
+    }
+
+    /* Mobile font size overrides */
+    .range-boxes__card-text {
+      font-size: var(--range-boxes-text-size, var(--text-font-size-mobile, 14px));
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Range Boxes",
+  "tag": "section",
+  "class": "section-wrapper",
+  "max_blocks": 24,
+  "disabled_on": {
+    "groups": ["header", "footer", "aside"]
+  },
+  "blocks": [
+    {
+      "type": "box",
+      "name": "Box",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Box Title"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Add your content here. Describe your feature, service, or highlight in a clear and concise way.</p>"
+        },
+        {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Read More"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Link"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_open_new_tab",
+          "label": "Open in new tab",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "options": [
+            {
+              "value": "button",
+              "label": "Primary"
+            },
+            {
+              "value": "button-secondary",
+              "label": "Secondary"
+            },
+            {
+              "value": "link",
+              "label": "Link"
+            },
+            {
+              "value": "button-unstyled",
+              "label": "Unstyled"
+            }
+          ],
+          "default": "link"
+        },
+        {
+          "type": "header",
+          "content": "Appearance"
+        },
+        {
+          "type": "color_scheme",
+          "id": "card_color_scheme",
+          "label": "Color scheme"
+        },
+        {
+          "type": "header",
+          "content": "Background Image"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_background_image",
+          "label": "Enable background image",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "background_image",
+          "label": "Background image",
+          "visible_if": "{{ block.settings.enable_background_image }}"
+        },
+        {
+          "type": "select",
+          "id": "background_size",
+          "label": "Background size",
+          "options": [
+            { "value": "cover", "label": "Cover" },
+            { "value": "contain", "label": "Contain" },
+            { "value": "auto", "label": "Auto" }
+          ],
+          "default": "cover",
+          "visible_if": "{{ block.settings.enable_background_image }}"
+        },
+        {
+          "type": "select",
+          "id": "background_position",
+          "label": "Background position",
+          "options": [
+            { "value": "center", "label": "Center" },
+            { "value": "top", "label": "Top" },
+            { "value": "bottom", "label": "Bottom" },
+            { "value": "left", "label": "Left" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center",
+          "visible_if": "{{ block.settings.enable_background_image }}"
+        },
+        {
+          "type": "header",
+          "content": "Card Spacing"
+        },
+        {
+          "type": "range",
+          "id": "card_padding_vertical",
+          "label": "Card padding (top & bottom)",
+          "min": 0,
+          "max": 80,
+          "step": 4,
+          "unit": "px",
+          "default": 48
+        },
+        {
+          "type": "range",
+          "id": "card_padding_horizontal",
+          "label": "Card padding (left & right)",
+          "min": 0,
+          "max": 80,
+          "step": 4,
+          "unit": "px",
+          "default": 48
+        },
+        {
+          "type": "header",
+          "content": "Borders"
+        },
+        {
+          "type": "select",
+          "id": "card_border_style",
+          "label": "Borders",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "solid", "label": "Solid" }
+          ],
+          "default": "solid"
+        },
+        {
+          "type": "range",
+          "id": "card_border_width",
+          "label": "Border width",
+          "min": 1,
+          "max": 5,
+          "step": 0.5,
+          "unit": "px",
+          "default": 1,
+          "visible_if": "{{ block.settings.card_border_style != 'none' }}"
+        },
+        {
+          "type": "range",
+          "id": "card_border_radius",
+          "label": "Border radius",
+          "min": 0,
+          "max": 40,
+          "step": 2,
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "checkbox",
+          "id": "card_shadow",
+          "label": "Enable card hover shadow",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Typography"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "label": "Heading size",
+          "options": [
+            { "value": "h1", "label": "H1" },
+            { "value": "h2", "label": "H2" },
+            { "value": "h3", "label": "H3" },
+            { "value": "h4", "label": "H4" }
+          ],
+          "default": "h3"
+        },
+        {
+          "type": "range",
+          "id": "text_font_size",
+          "label": "Body text font size",
+          "min": 12,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "default": 16
+        },
+        {
+          "type": "header",
+          "content": "Mobile"
+        },
+        {
+          "type": "range",
+          "id": "text_font_size_mobile",
+          "label": "Body text font size (mobile)",
+          "min": 12,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "default": 14
+        },
+        {
+          "type": "select",
+          "id": "content_alignment",
+          "label": "Content alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "vertical_alignment",
+          "label": "Vertical alignment",
+          "options": [
+            { "value": "top", "label": "Top" },
+            { "value": "center", "label": "Center" },
+            { "value": "bottom", "label": "Bottom" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "range",
+          "id": "min_height",
+          "label": "Minimum height",
+          "min": 0,
+          "max": 500,
+          "step": 10,
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Mobile Padding"
+        },
+        {
+          "type": "range",
+          "id": "card_padding_vertical_mobile",
+          "label": "Padding (top/bottom)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 24
+        },
+        {
+          "type": "range",
+          "id": "card_padding_horizontal_mobile",
+          "label": "Padding (left/right)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 24
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_heading",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Heading alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_columns",
+      "label": "Columns on desktop",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "label": "Columns on mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start-mobile",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end-mobile",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start-mobile",
+      "label": "Left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end-mobile",
+      "label": "Right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Width",
+      "options": [
+        { "value": "page-width", "label": "Page" },
+        { "value": "full-width", "label": "Full" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color_scheme",
+      "id": "card_color_scheme",
+      "label": "Card color scheme (default)",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" }
+      ],
+      "default": "h3"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "label": "Title font size",
+      "min": 12,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "Left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "Right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Range Boxes",
+      "category": "Palliser Ridge Sections",
+      "settings": {
+        "desktop_columns": 2,
+        "mobile_columns": "1",
+        "gap": 24,
+        "section_width": "page-width",
+        "heading_size": "h3",
+        "title_font_size": 20,
+        "header_alignment": "left",
+        "padding-block-start": 48,
+        "padding-block-end": 48,
+        "padding-inline-start": 0,
+        "padding-inline-end": 0
+      },
+      "blocks": [
+        {
+          "type": "box",
+          "settings": {
+            "title": "Box Title One",
+            "text": "<p>Add your content here. Describe your feature, service, or highlight in a clear and concise way.</p>",
+            "button_label": "Read More",
+            "button_style": "link",
+            "heading_size": "h3",
+            "text_font_size": 16,
+            "content_alignment": "center",
+            "vertical_alignment": "center",
+            "min_height": 0
+          }
+        },
+        {
+          "type": "box",
+          "settings": {
+            "title": "Box Title Two",
+            "text": "<p>Add your content here. Describe your feature, service, or highlight in a clear and concise way.</p>",
+            "button_label": "Read More",
+            "button_style": "link",
+            "heading_size": "h3",
+            "text_font_size": 16,
+            "content_alignment": "center",
+            "vertical_alignment": "center",
+            "min_height": 0
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
