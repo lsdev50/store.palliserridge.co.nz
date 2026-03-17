@@ -1,10 +1,10 @@
 {% comment %}
-    sections.upcoming-events.liquid
+  sections.upcoming-events.liquid
 {% endcomment %}
 
 {%- liquid
   assign desktop_cols = section.settings.desktop_columns
-  assign mobile_cols = section.settings.mobile_columns | default: "1"
+  assign mobile_cols = section.settings.mobile_columns | default: '1'
   assign header_alignment_class = 'upcoming-events--header-' | append: section.settings.content_alignment
   assign button_alignment_class = 'upcoming-events--button-' | append: section.settings.button_alignment
   assign item_title_alignment_class = 'upcoming-events--item-title-' | append: section.settings.item_title_alignment
@@ -37,6 +37,7 @@
     --upcoming-events-mobile-cols: {{ mobile_cols }};
     --upcoming-events-heading-font: var(--font-{{ section.settings.heading_font }}--family, var(--font-heading-family));
     --upcoming-events-text-font: var(--font-{{ section.settings.text_font }}--family, var(--font-body-family));
+    --upcoming-events-font-size-mobile: {{ section.settings.font_size_mobile }}px;
   "
   data-section-id="{{ section.id }}"
 >
@@ -54,14 +55,14 @@
       <div class="upcoming-events__item">
         <a href="{{ event.url }}" class="upcoming-events__item-link" target="_blank" rel="noopener">
           {% if event.image %}
-            <img 
-              class="upcoming-events__item-image" 
-              src="{{ event.image | image_url: width: 800 }}" 
-              alt="{{ event.title | escape }}" 
-              width="100%" 
-              height="auto" 
+            <img
+              class="upcoming-events__item-image"
+              src="{{ event.image | image_url: width: 800 }}"
+              alt="{{ event.title | escape }}"
+              width="100%"
+              height="auto"
               loading="lazy"
-            />
+            >
           {% endif %}
           <p class="upcoming-events__item-title">{{ event.title | escape }}</p>
         </a>
@@ -82,18 +83,21 @@
 
 <script>
   function initializeAnimations() {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => {
-            entry.target.classList.add('visible');
-          }, index * 100);
-        }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.classList.add('visible');
+            }, index * 100);
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px',
+      },
+    );
 
     document.querySelectorAll('.upcoming-events__item').forEach((item, index) => {
       item.classList.remove('visible');
@@ -102,7 +106,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', initializeAnimations);
-  
+
   // Reinitialize when theme editor updates
   document.addEventListener('shopify:section:load', initializeAnimations);
   document.addEventListener('shopify:section:reorder', initializeAnimations);
@@ -209,7 +213,9 @@
     color: inherit;
     border-radius: 8px;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
   }
 
   .upcoming-events__item-link:hover {
@@ -258,6 +264,10 @@
 
     .upcoming-events__header {
       margin-block-end: clamp(1.5rem, 4vw, 2.5rem);
+    }
+
+    .upcoming-events__title {
+      font-size: var(--upcoming-events-font-size-mobile, 36px);
     }
 
     .upcoming-events__item-title {
@@ -506,9 +516,9 @@
       "label": "Top padding",
       "min": 0,
       "max": 100,
-      "step": 4,
+      "step": 1,
       "unit": "px",
-      "default": 48
+      "default": 24
     },
     {
       "type": "range",
@@ -516,7 +526,7 @@
       "label": "Bottom padding",
       "min": 0,
       "max": 100,
-      "step": 4,
+      "step": 1,
       "unit": "px",
       "default": 48
     },
@@ -526,7 +536,7 @@
       "label": "Left padding",
       "min": 0,
       "max": 100,
-      "step": 4,
+      "step": 1,
       "unit": "px",
       "default": 0
     },
@@ -536,7 +546,7 @@
       "label": "Right padding",
       "min": 0,
       "max": 100,
-      "step": 4,
+      "step": 1,
       "unit": "px",
       "default": 0
     },
@@ -550,7 +560,7 @@
       "label": "Top padding (mobile)",
       "min": 0,
       "max": 100,
-      "step": 4,
+      "step": 1,
       "unit": "px",
       "default": 24
     },
@@ -560,7 +570,7 @@
       "label": "Bottom padding (mobile)",
       "min": 0,
       "max": 100,
-      "step": 4,
+      "step": 1,
       "unit": "px",
       "default": 24
     },
@@ -570,7 +580,7 @@
       "label": "Left padding (mobile)",
       "min": 0,
       "max": 100,
-      "step": 4,
+      "step": 1,
       "unit": "px",
       "default": 0
     },
@@ -580,9 +590,24 @@
       "label": "Right padding (mobile)",
       "min": 0,
       "max": 100,
-      "step": 4,
+      "step": 1,
       "unit": "px",
       "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "label": "Font size (Mobile)",
+      "min": 24,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 36,
+      "info": "Font size for heading on mobile devices"
     }
   ],
   "presets": [

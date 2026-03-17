@@ -7,7 +7,7 @@
 
 {%- liquid
   assign desktop_cols = section.settings.desktop_columns
-  assign mobile_cols = section.settings.mobile_columns | default: "1"
+  assign mobile_cols = section.settings.mobile_columns | default: '1'
   assign header_alignment_class = 'range-boxes--header-' | append: section.settings.header_alignment
 -%}
 
@@ -35,6 +35,7 @@
     --range-boxes-desktop-cols: {{ desktop_cols }};
     --range-boxes-mobile-cols: {{ mobile_cols }};
     --range-boxes-title-size: {{ section.settings.title_font_size }}px;
+    --range-boxes-section-heading-size-mobile: {{ section.settings.section_heading_font_size_mobile }}px;
   "
   data-section-id="{{ section.id }}"
 >
@@ -73,6 +74,7 @@
           --range-boxes-border-width: {{ block.settings.card_border_width }}px;
           --range-boxes-text-size: {{ block.settings.text_font_size }}px;
           --range-boxes-text-size-mobile: {{ block.settings.text_font_size_mobile }}px;
+          --range-boxes-heading-size-mobile: {{ block.settings.heading_font_size_mobile }}px;
           text-align: {{ block.settings.content_alignment }};
           justify-content: {{ block.settings.vertical_alignment }};
           min-height: {{ block.settings.min_height }}px;
@@ -212,13 +214,19 @@
 
     /* Mobile box padding overrides */
     .range-boxes__card {
-      padding-block: var(--range-boxes-card-padding-block, var(--card-padding-vertical-mobile, 24px));
-      padding-inline: var(--range-boxes-card-padding-inline, var(--card-padding-horizontal-mobile, 24px));
+      padding-block: var(--range-boxes-card-padding-block-mobile, var(--range-boxes-card-padding-block, 32px));
+      padding-inline: var(--range-boxes-card-padding-inline-mobile, var(--range-boxes-card-padding-inline, 32px));
     }
 
     /* Mobile font size overrides */
+    .range-boxes__section-heading {
+      font-size: var(--range-boxes-section-heading-size-mobile, 36px);
+    }
+    .range-boxes__card-title {
+      font-size: var(--range-boxes-heading-size-mobile, var(--range-boxes-title-size, inherit));
+    }
     .range-boxes__card-text {
-      font-size: var(--range-boxes-text-size, var(--text-font-size-mobile, 14px));
+      font-size: var(--range-boxes-text-size-mobile, var(--range-boxes-text-size, inherit));
     }
   }
 {% endstylesheet %}
@@ -442,13 +450,23 @@
         },
         {
           "type": "range",
+          "id": "heading_font_size_mobile",
+          "label": "Heading font size (mobile)",
+          "min": 12,
+          "max": 60,
+          "step": 1,
+          "unit": "px",
+          "default": 28
+        },
+        {
+          "type": "range",
           "id": "text_font_size_mobile",
           "label": "Body text font size (mobile)",
           "min": 12,
           "max": 24,
           "step": 1,
           "unit": "px",
-          "default": 14
+          "default": 16
         },
         {
           "type": "select",
@@ -716,6 +734,21 @@
       "step": 1,
       "unit": "px",
       "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Typography - Mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_heading_font_size_mobile",
+      "label": "Section heading size (Mobile)",
+      "min": 24,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 36,
+      "info": "Font size for main section heading on mobile devices"
     }
   ],
   "presets": [

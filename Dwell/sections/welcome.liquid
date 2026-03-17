@@ -1,6 +1,7 @@
 {%- liquid
   assign column_ratio_class = 'welcome-section--' | append: section.settings.column_ratio
   assign content_alignment_class = 'welcome-section--content-' | append: section.settings.content_alignment
+  assign column_direction_class = 'welcome-section--direction-' | append: section.settings.column_direction
 
   if section.settings.enable_animation
     assign animation_class = ' welcome-section--animated'
@@ -67,7 +68,7 @@
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <div
-  class="section section--{{ section.settings.section_width }} welcome-section color-{{ section.settings.color_scheme }} spacing-style {{ column_ratio_class }} {{ content_alignment_class }}{{ animation_class }}"
+  class="section section--{{ section.settings.section_width }} welcome-section color-{{ section.settings.color_scheme }} spacing-style {{ column_ratio_class }} {{ content_alignment_class }} {{ column_direction_class }}{{ animation_class }}"
   style="
     {% render 'spacing-padding', settings: section.settings %}
     {% render 'border-override', settings: section.settings %}
@@ -77,6 +78,16 @@
     --welcome-heading-font: var(--font-{{ section.settings.heading_font }}--family, var(--font-heading-family));
     --welcome-text-font: var(--font-{{ section.settings.text_font }}--family, var(--font-body-family));
     --animation-delay: {{ section.settings.animation_delay }};
+    --padding-block-start: {{ section.settings.padding-block-start }}px;
+    --padding-block-end: {{ section.settings.padding-block-end }}px;
+    --padding-block-start-mobile: {{ section.settings.padding-block-start-mobile }}px;
+    --padding-block-end-mobile: {{ section.settings.padding-block-end-mobile }}px;
+    --heading-size-desktop: {{ section.settings.heading_size_desktop }}px;
+    --heading-size-mobile: {{ section.settings.heading_size_mobile }}px;
+    --subheading-size-desktop: {{ section.settings.subheading_size_desktop }}px;
+    --subheading-size-mobile: {{ section.settings.subheading_size_mobile }}px;
+    --text-size-desktop: {{ section.settings.text_size_desktop }}px;
+    --text-size-mobile: {{ section.settings.text_size_mobile }}px;
   "
   {% if request.visual_preview_mode %}
     data-shopify-visual-preview
@@ -115,6 +126,18 @@
     grid-template-columns: 2fr 3fr;
   }
 
+  .welcome-section--direction-reverse .welcome-section__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .welcome-section--direction-reverse.welcome-section--wide-left .welcome-section__grid {
+    grid-template-columns: 2fr 3fr;
+  }
+
+  .welcome-section--direction-reverse.welcome-section--wide-right .welcome-section__grid {
+    grid-template-columns: 3fr 2fr;
+  }
+
   .welcome-section--content-left .welcome-section__column--left {
     text-align: left;
   }
@@ -151,28 +174,41 @@
   }
 
   .welcome-section__text,
-  .welcome-section__description {
-    font-size: 1rem;
+  .welcome-section__description,
+  .welcome-section .welcome-section__text,
+  .welcome-section .welcome-section__description {
+    font-size: var(--text-size-desktop, 16px) !important;
     line-height: 1.6;
     font-family: var(--welcome-text-font);
     font-weight: var(--welcome-text-font-weight);
     color: currentColor;
   }
 
-  .welcome-section__heading {
+  /* Target RTE content specifically */
+  .welcome-section .rte,
+  .welcome-section .rte p,
+  .welcome-section .welcome-section__text.rte,
+  .welcome-section .welcome-section__description.rte {
+    font-size: var(--text-size-desktop, 16px) !important;
+  }
+
+  .welcome-section__heading,
+  .welcome-section .welcome-section__heading {
     margin: 0 0 0.5rem 0;
     font-family: var(--welcome-heading-font);
+    font-size: var(--heading-size-desktop, 48px) !important;
     line-height: 1.2;
     color: currentColor;
   }
 
-  .welcome-section__sub-heading {
+  .welcome-section__sub-heading,
+  .welcome-section .welcome-section__sub-heading {
     margin: 0;
     opacity: 0.8;
     font-family: var(--welcome-text-font);
+    font-size: var(--subheading-size-desktop, 18px) !important;
     line-height: 1.3;
     color: currentColor;
-    font-size: 18px;
   }
 
   .welcome-section__button {
@@ -262,6 +298,38 @@
     .welcome-section--content-center .welcome-section__button,
     .welcome-section--content-right .welcome-section__button {
       align-self: flex-start;
+    }
+
+    /* Mobile padding overrides */
+    .welcome-section {
+      padding-block-start: var(--padding-block-start-mobile, var(--padding-block-start, 50px));
+      padding-block-end: var(--padding-block-end-mobile, var(--padding-block-end, 50px));
+    }
+
+    /* Mobile typography overrides */
+    .welcome-section__heading,
+    .welcome-section .welcome-section__heading {
+      font-size: var(--heading-size-mobile, 32px) !important;
+    }
+
+    .welcome-section__sub-heading,
+    .welcome-section .welcome-section__sub-heading {
+      font-size: var(--subheading-size-mobile, 16px) !important;
+    }
+
+    .welcome-section__text,
+    .welcome-section__description,
+    .welcome-section .welcome-section__text,
+    .welcome-section .welcome-section__description {
+      font-size: var(--text-size-mobile, 14px) !important;
+    }
+
+    /* Target RTE content on mobile */
+    .welcome-section .rte,
+    .welcome-section .rte p,
+    .welcome-section .welcome-section__text.rte,
+    .welcome-section .welcome-section__description.rte {
+      font-size: var(--text-size-mobile, 14px) !important;
     }
   }
 {% endstylesheet %}
@@ -426,6 +494,80 @@
     },
     {
       "type": "header",
+      "content": "Typography Sizes - Desktop"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "label": "Main heading size (Desktop)",
+      "min": 24,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 48,
+      "info": "Font size for main heading on desktop"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size_desktop",
+      "label": "Subheading size (Desktop)",
+      "min": 14,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 18,
+      "info": "Font size for subheading on desktop"
+    },
+    {
+      "type": "range",
+      "id": "text_size_desktop",
+      "label": "Body text size (Desktop)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16,
+      "info": "Font size for description and left text on desktop"
+    },
+    {
+      "type": "header",
+      "content": "Typography Sizes - Mobile"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Main heading size (Mobile)",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 32,
+      "info": "Font size for main heading on mobile devices"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size_mobile",
+      "label": "Subheading size (Mobile)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16,
+      "info": "Font size for subheading on mobile devices"
+    },
+    {
+      "type": "range",
+      "id": "text_size_mobile",
+      "label": "Body text size (Mobile)",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14,
+      "info": "Font size for description and left text on mobile devices"
+    },
+    {
+      "type": "header",
       "content": "Style"
     },
     {
@@ -489,6 +631,26 @@
       "step": 1,
       "unit": "px",
       "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start-mobile",
+      "label": "Padding top (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end-mobile",
+      "label": "Padding bottom (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 50
     }
   ],
   "presets": [
@@ -509,7 +671,13 @@
         "color_scheme": "scheme-1",
         "section_width": "page-width",
         "enable_animation": true,
-        "animation_delay": "0.2s"
+        "animation_delay": "0.2s",
+        "heading_size_desktop": 48,
+        "heading_size_mobile": 32,
+        "subheading_size_desktop": 18,
+        "subheading_size_mobile": 16,
+        "text_size_desktop": 16,
+        "text_size_mobile": 14
       }
     }
   ]

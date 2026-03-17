@@ -8,6 +8,21 @@
 
 {% render 'product-card', children: children, product: product, block: block %}
 
+<style>
+  @media screen and (max-width: 749px) {
+    .product-card .product-title {
+      font-size: {{ block.settings.product_title_font_size_mobile }}px !important;
+    }
+    .product-card .text-block {
+      font-size: {{ block.settings.product_text_font_size_mobile }}px !important;
+    }
+    .product-card .price {
+      font-size: {{ block.settings.product_price_font_size_mobile }}px !important;
+      font-weight: {{ block.settings.product_price_font_weight_mobile }} !important;
+    }
+  }
+</style>
+
 {% schema %}
 {
   "name": "t:names.product_card",
@@ -236,6 +251,64 @@
       "step": 1,
       "unit": "px",
       "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Typography - Mobile"
+    },
+    {
+      "type": "range",
+      "id": "product_title_font_size_mobile",
+      "label": "Product title size (Mobile)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16,
+      "info": "Font size for product title on mobile devices"
+    },
+    {
+      "type": "range",
+      "id": "product_text_font_size_mobile",
+      "label": "Product text size (Mobile)",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14,
+      "info": "Font size for product text on mobile devices"
+    },
+    {
+      "type": "range",
+      "id": "product_price_font_size_mobile",
+      "label": "Product price size (Mobile)",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16,
+      "info": "Font size for product price on mobile devices"
+    },
+    {
+      "type": "select",
+      "id": "product_price_font_weight_mobile",
+      "label": "Product price weight (Mobile)",
+      "options": [
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "600",
+          "label": "Semi Bold"
+        },
+        {
+          "value": "bold",
+          "label": "Bold"
+        }
+      ],
+      "default": "bold",
+      "info": "Font weight for product price on mobile devices"
     }
   ],
   "presets": [

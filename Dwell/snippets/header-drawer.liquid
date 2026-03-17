@@ -78,6 +78,7 @@
         type="button"
         aria-label="{{ 'actions.close' | t }}"
         on:click="/close"
+        style="box-shadow: none;"
       >
         <span class="svg-wrapper header-drawer-icon header-drawer-icon--close">
           {{- 'icon-close.svg' | inline_asset_content -}}
@@ -88,6 +89,7 @@
         style="
           {%- render 'menu-font-styles', settings: block_settings, menu_type: 'drawer' %}
           {%- render 'submenu-font-styles', settings: block_settings %}
+          --menu-top-level-font-size: var(--menu-top-level-font-size-mobile, var(--menu-font-2xl--size));
         "
         aria-label="{{ 'accessibility.header_navigation_label' | t }}"
       >

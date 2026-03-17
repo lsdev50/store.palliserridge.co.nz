@@ -17,14 +17,18 @@
       data-hydration-key="header-drawer-mobile"
       {{ block.shopify_attributes }}
     >
-      {% render 'header-drawer', linklist: block_settings.menu, data_header_drawer_type: 'mobile-drawer' %}
+      {% render 'header-drawer',
+        linklist: block_settings.menu,
+        data_header_drawer_type: 'mobile-drawer',
+        block: block
+      %}
     </div>
 
   {% when 'navigation_bar' %}
     {% if block_settings.navigation_bar == true %}
       <div
         class="menu-list menu-list--mobile{% if transparent == blank %} color-{{ block_settings.color_scheme_navigation_bar }}{% endif %}"
-        style="--menu-horizontal-gap: 15px; --mobile-nav-margin: auto;"
+        style="--menu-horizontal-gap: 15px; --mobile-nav-margin: auto; --font-size-mobile: {{ block_settings.font_size_mobile }}px;"
         data-hydration-key="header-menu-mobile-navigation-bar"
       >
         <div class="menu-list__scroll-container">
@@ -886,6 +890,21 @@
       "label": "t:settings.expand_first_group",
       "default": false,
       "visible_if": "{{ block.settings.drawer_accordion == true }}"
+    },
+    {
+      "type": "header",
+      "content": "Typography Sizes - Mobile"
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "label": "Font size (Mobile)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16,
+      "info": "Font size for menu items on mobile devices"
     },
     {
       "type": "checkbox",
