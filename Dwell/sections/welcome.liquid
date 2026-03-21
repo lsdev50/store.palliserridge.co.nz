@@ -1,6 +1,7 @@
 {%- liquid
   assign column_ratio_class = 'welcome-section--' | append: section.settings.column_ratio
   assign content_alignment_class = 'welcome-section--content-' | append: section.settings.content_alignment
+  assign vertical_alignment_class = 'welcome-section--vertical-' | append: section.settings.vertical_alignment
   assign column_direction_class = 'welcome-section--direction-' | append: section.settings.column_direction
 
   if section.settings.enable_animation
@@ -15,18 +16,6 @@
     <div class="welcome-section__image-wrapper">
       {{ section.settings.left_image | image_url: width: 800 | image_tag: widths: '400, 600, 800, 1000', sizes: '(max-width: 749px) 100vw, (max-width: 1024px) 50vw, 40vw', class: 'welcome-section__image', alt: 'Left column image', loading: 'lazy' }}
     </div>
-  {% endif %}
-
-  {% if section.settings.left_text != blank %}
-    <div class="welcome-section__text rte">
-      {{ section.settings.left_text }}
-    </div>
-  {% endif %}
-
-  {% if section.settings.button_text != blank and section.settings.button_link != blank %}
-    <a href="{{ section.settings.button_link }}" class="welcome-section__button button button--primary">
-      {{ section.settings.button_text }}
-    </a>
   {% endif %}
 {% endcapture %}
 
@@ -49,32 +38,21 @@
     </div>
   {% endif %}
 
-  {% if section.settings.bottom_image_1 != blank or section.settings.bottom_image_2 != blank %}
-    <div class="welcome-section__images">
-      {% if section.settings.bottom_image_1 != blank %}
-        <div class="welcome-section__image-item">
-          {{ section.settings.bottom_image_1 | image_url: width: 400 | image_tag: widths: '200, 300, 400', sizes: '(max-width: 749px) 100vw, (max-width: 1024px) 25vw, 20vw', class: 'welcome-section__image', alt: 'Right image 1', loading: 'lazy' }}
-        </div>
-      {% endif %}
-
-      {% if section.settings.bottom_image_2 != blank %}
-        <div class="welcome-section__image-item">
-          {{ section.settings.bottom_image_2 | image_url: width: 400 | image_tag: widths: '200, 300, 400', sizes: '(max-width: 749px) 100vw, (max-width: 1024px) 25vw, 20vw', class: 'welcome-section__image', alt: 'Right image 2', loading: 'lazy' }}
-        </div>
-      {% endif %}
-    </div>
+  {% if section.settings.button_text != blank and section.settings.button_link != blank %}
+    <a href="{{ section.settings.button_link }}" class="welcome-section__button button button--primary">
+      {{ section.settings.button_text }}
+    </a>
   {% endif %}
 {% endcapture %}
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <div
-  class="section section--{{ section.settings.section_width }} welcome-section color-{{ section.settings.color_scheme }} spacing-style {{ column_ratio_class }} {{ content_alignment_class }} {{ column_direction_class }}{{ animation_class }}"
+  class="section section--{{ section.settings.section_width }} welcome-section color-{{ section.settings.color_scheme }} spacing-style {{ column_ratio_class }} {{ content_alignment_class }} {{ vertical_alignment_class }} {{ column_direction_class }}{{ animation_class }}"
   style="
     {% render 'spacing-padding', settings: section.settings %}
     {% render 'border-override', settings: section.settings %}
     --column-gap: {{ section.settings.column_gap }}px;
     --image-border-radius: {{ section.settings.image_border_radius }}px;
-    --right-images-gap: {{ section.settings.right_images_gap }}px;
     --welcome-heading-font: var(--font-{{ section.settings.heading_font }}--family, var(--font-heading-family));
     --welcome-text-font: var(--font-{{ section.settings.text_font }}--family, var(--font-body-family));
     --animation-delay: {{ section.settings.animation_delay }};
@@ -112,6 +90,18 @@
     display: grid;
     gap: var(--column-gap);
     align-items: start;
+  }
+
+  .welcome-section--vertical-top .welcome-section__grid {
+    align-items: start;
+  }
+
+  .welcome-section--vertical-center .welcome-section__grid {
+    align-items: center;
+  }
+
+  .welcome-section--vertical-bottom .welcome-section__grid {
+    align-items: end;
   }
 
   .welcome-section--equal .welcome-section__grid {
@@ -217,34 +207,6 @@
     margin-top: 0.5rem;
   }
 
-  .welcome-section--content-center .welcome-section__button {
-    align-self: center;
-  }
-
-  .welcome-section--content-right .welcome-section__button {
-    align-self: flex-end;
-  }
-
-  .welcome-section__images {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--right-images-gap);
-    margin-top: auto;
-  }
-
-  .welcome-section__image-item {
-    position: relative;
-    overflow: hidden;
-    border-radius: var(--image-border-radius);
-    aspect-ratio: 1 / 1;
-  }
-
-  .welcome-section__image-item .welcome-section__image {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-  }
-
   .welcome-section--animated {
     opacity: 0;
     animation: fadeInUp var(--animation-duration) ease forwards;
@@ -283,15 +245,6 @@
     .welcome-section--content-left .welcome-section__grid,
     .welcome-section--content-right .welcome-section__grid {
       grid-template-columns: 1fr;
-    }
-
-    .welcome-section__images {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-
-    .welcome-section__image-item {
-      aspect-ratio: 16 / 9;
     }
 
     .welcome-section--content-left .welcome-section__button,
@@ -376,12 +329,6 @@
     },
     {
       "type": "text",
-      "id": "left_text",
-      "label": "Left column text",
-      "default": "Pirinoa Station is a 5th generation family owned and operated sheep and beef station located on stunning south coast of Wairarapa."
-    },
-    {
-      "type": "text",
       "id": "button_text",
       "label": "Button text",
       "default": "Contact us"
@@ -399,16 +346,6 @@
       "type": "image_picker",
       "id": "left_image",
       "label": "Left column image"
-    },
-    {
-      "type": "image_picker",
-      "id": "bottom_image_1",
-      "label": "Right column image 1"
-    },
-    {
-      "type": "image_picker",
-      "id": "bottom_image_2",
-      "label": "Right column image 2"
     },
     {
       "type": "header",
@@ -437,6 +374,17 @@
       "default": "left"
     },
     {
+      "type": "select",
+      "id": "vertical_alignment",
+      "label": "Vertical alignment",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "bottom", "label": "Bottom" }
+      ],
+      "default": "top"
+    },
+    {
       "type": "range",
       "id": "column_gap",
       "label": "Column gap",
@@ -445,16 +393,6 @@
       "step": 5,
       "unit": "px",
       "default": 40
-    },
-    {
-      "type": "range",
-      "id": "right_images_gap",
-      "label": "Images gap",
-      "min": 10,
-      "max": 40,
-      "step": 2,
-      "unit": "px",
-      "default": 20
     },
     {
       "type": "select",
@@ -527,7 +465,7 @@
       "step": 1,
       "unit": "px",
       "default": 16,
-      "info": "Font size for description and left text on desktop"
+      "info": "Font size for description on desktop"
     },
     {
       "type": "header",
@@ -564,7 +502,7 @@
       "step": 1,
       "unit": "px",
       "default": 14,
-      "info": "Font size for description and left text on mobile devices"
+      "info": "Font size for description on mobile devices"
     },
     {
       "type": "header",
@@ -662,11 +600,9 @@
         "heading_size": "h2",
         "sub_heading": "Pirinoa | South Wairarapa | New Zealand",
         "button_text": "Contact us",
-        "left_text": "Pirinoa Station is a 5th generation family owned and operated sheep and beef station located on the stunning south coast of the Wairarapa.",
-        "column_ratio": "equal",
+        "vertical_alignment": "top",
         "content_alignment": "left",
         "column_gap": 40,
-        "right_images_gap": 20,
         "image_border_radius": 8,
         "color_scheme": "scheme-1",
         "section_width": "page-width",
