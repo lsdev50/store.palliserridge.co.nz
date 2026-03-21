@@ -6,8 +6,57 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
+    "contact_section_PjRrkY": {
+      "type": "contact-section",
+      "name": "Contact Section",
+      "settings": {
+        "eyebrow": "Get in Touch",
+        "section_heading": "Contact Palliser Ridge",
+        "heading_tag": "h2",
+        "intro_text": "<p>We'd love to hear from you. Whether you're planning a visit, looking to purchase our wool products, or have a general enquiry reach out anytime.</p>",
+        "address_title": "Find Us",
+        "address_text": "<p>226 Te Rata Road<br/>RD2, Featherston 5772<br/>New Zealand</p>",
+        "address_link": "",
+        "email_title": "Email",
+        "email_address": "info@palliserridge.co.nz",
+        "phone_title": "Phone",
+        "phone_number": "+64 27 503 5145",
+        "show_hours": true,
+        "hours_title": "Hours",
+        "hours_text": "<p>Monday – Friday: 9:00am – 5:00pm<br/>Weekends: By appointment</p>",
+        "additional_info": "",
+        "cta_text": "",
+        "cta_link": "#",
+        "show_image": true,
+        "contact_image": "shopify://shop_images/farm-2.jpg",
+        "image_alt_text": "",
+        "image_link": "",
+        "image_position": "right",
+        "image_height": 380,
+        "label_font_size": 14,
+        "label_letter_spacing": 0.1,
+        "label_text_transform": "uppercase",
+        "label_padding_top": 1,
+        "label_font_weight": "400",
+        "heading_font": "heading",
+        "body_font": "body",
+        "heading_size_desktop": 52,
+        "text_size_desktop": 16,
+        "heading_size_mobile": 32,
+        "text_size_mobile": 15,
+        "color_scheme": "scheme-1",
+        "divider_opacity": 0.1,
+        "column_gap": 60,
+        "section_width": "page-width",
+        "padding-block-start": 52,
+        "padding-block-end": 52,
+        "padding-block-start-mobile": 60,
+        "padding-block-end-mobile": 60
+      }
+    },
     "main": {
       "type": "main-page",
       "blocks": {
@@ -15,18 +64,18 @@
           "type": "text",
           "name": "t:names.title",
           "settings": {
-            "text": "<h1>{{ closest.page.title }}</h1>",
+            "text": "<h3>Get In Touch</h3>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
-            "type_preset": "h2",
+            "type_preset": "h3",
             "font": "var(--font-body--family)",
             "font_size": "",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
-            "color": "",
+            "color": "var(--color-foreground-heading)",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
@@ -37,22 +86,22 @@
           },
           "blocks": {}
         },
-        "content": {
+        "text_8eEqNB": {
           "type": "text",
-          "name": "t:names.content",
+          "name": "t:names.text",
           "settings": {
-            "text": "{{ closest.page.content }}",
+            "text": "<p>Questions about wool, the retreat, or anything in between, we'd love to hear from you.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
             "type_preset": "rte",
             "font": "var(--font-body--family)",
-            "font_size": "",
+            "font_size": "1rem",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
-            "color": "",
+            "color": "var(--color-foreground)",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
@@ -62,28 +111,12 @@
             "padding-inline-end": 0
           },
           "blocks": {}
-        }
-      },
-      "block_order": [
-        "title",
-        "content"
-      ],
-      "settings": {
-        "content_direction": "column",
-        "gap": 32,
-        "color_scheme": "",
-        "padding-block-start": 40,
-        "padding-block-end": 0
-      }
-    },
-    "form": {
-      "type": "section",
-      "blocks": {
-        "contact_form_UwiCkQ": {
+        },
+        "contact_form_3yhhBB": {
           "type": "contact-form",
           "settings": {
             "width": "custom",
-            "custom_width": 50,
+            "custom_width": 100,
             "width_mobile": "custom",
             "custom_width_mobile": 100,
             "inherit_color_scheme": true,
@@ -100,7 +133,7 @@
               "settings": {
                 "label": "Submit",
                 "style_class": "button",
-                "width": "fit-content",
+                "width": "custom",
                 "custom_width": 100,
                 "width_mobile": "fit-content",
                 "custom_width_mobile": 100
@@ -112,40 +145,21 @@
         }
       },
       "block_order": [
-        "contact_form_UwiCkQ"
+        "title",
+        "text_8eEqNB",
+        "contact_form_3yhhBB"
       ],
-      "name": "t:names.contact_form",
       "settings": {
         "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 32,
-        "section_width": "page-width",
-        "section_height": "",
-        "section_height_custom": 50,
-        "color_scheme": "scheme-1",
-        "background_media": "none",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_radius": 0,
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "padding-block-start": 0,
-        "padding-block-end": 70
+        "gap": 20,
+        "color_scheme": "",
+        "padding-block-start": 50,
+        "padding-block-end": 50
       }
     }
   },
   "order": [
-    "main",
-    "form"
+    "contact_section_PjRrkY",
+    "main"
   ]
 }

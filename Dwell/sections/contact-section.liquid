@@ -1,0 +1,789 @@
+{% comment %}
+  Section: contact-section.liquid
+  Description: Editorial contact section for Palliser Ridge.
+  Follows theme conventions: {% stylesheet %}, CSS custom properties,
+  spacing-style, section--{{ width }}, color-{{ scheme }} patterns.
+{% endcomment %}
+
+{%- liquid
+  assign image_position = section.settings.image_position
+  assign show_image = section.settings.show_image
+-%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  class="
+    section
+    section--{{ section.settings.section_width }}
+    contact-section
+    contact-section--image-{{ image_position }}
+    spacing-style
+    color-{{ section.settings.color_scheme }}
+  "
+  style="
+    --padding-block-start: {{ section.settings.padding-block-start }}px;
+    --padding-block-end: {{ section.settings.padding-block-end }}px;
+    --padding-block-start-mobile: {{ section.settings.padding-block-start-mobile }}px;
+    --padding-block-end-mobile: {{ section.settings.padding-block-end-mobile }}px;
+    --contact-column-gap: {{ section.settings.column_gap }}px;
+    --contact-heading-size: {{ section.settings.heading_size_desktop }}px;
+    --contact-heading-size-mobile: {{ section.settings.heading_size_mobile }}px;
+    --contact-text-size: {{ section.settings.text_size_desktop }}px;
+    --contact-text-size-mobile: {{ section.settings.text_size_mobile }}px;
+    --contact-label-font-weight: {{ section.settings.label_font_weight }};
+    --contact-label-font-size: {{ section.settings.label_font_size }}px;
+    --contact-label-letter-spacing: {{ section.settings.label_letter_spacing }}em;
+    --contact-label-text-transform: {{ section.settings.label_text_transform }};
+    --contact-label-padding-top: {{ section.settings.label_padding_top }}px;
+    --contact-divider-opacity: {{ section.settings.divider_opacity }};
+    --contact-heading-font: var(--font-{{ section.settings.heading_font }}--family, var(--font-heading-family));
+    --contact-body-font: var(--font-{{ section.settings.body_font }}--family, var(--font-body-family));
+  "
+  data-section-id="{{ section.id }}"
+>
+
+  {%- if section.settings.eyebrow != blank -%}
+    <p class="contact-section__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+  {%- endif -%}
+
+  {%- if section.settings.section_heading != blank -%}
+    <{{ section.settings.heading_tag }} class="contact-section__heading">
+      {{ section.settings.section_heading | escape }}
+    </{{ section.settings.heading_tag }}>
+  {%- endif -%}
+
+  {%- if section.settings.intro_text != blank -%}
+    <div class="contact-section__intro rte">{{ section.settings.intro_text }}</div>
+  {%- endif -%}
+
+  <div class="contact-section__body">
+
+    <div class="contact-section__details">
+
+      {%- if section.settings.address_text != blank -%}
+        <div class="contact-item">
+          <span class="contact-item__label">{{ section.settings.address_title | default: 'Find Us' }}</span>
+          <div class="contact-item__value rte">
+            {%- if section.settings.address_link != blank -%}
+              <a href="{{ section.settings.address_link }}" target="_blank" rel="noopener noreferrer" class="contact-item__link">
+                {{ section.settings.address_text }}
+              </a>
+            {%- else -%}
+              {{ section.settings.address_text }}
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.email_address != blank -%}
+        <div class="contact-item">
+          <span class="contact-item__label">{{ section.settings.email_title | default: 'Email' }}</span>
+          <div class="contact-item__value">
+            <a href="mailto:{{ section.settings.email_address }}" class="contact-item__link">
+              {{ section.settings.email_address }}
+            </a>
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.phone_number != blank -%}
+        <div class="contact-item">
+          <span class="contact-item__label">{{ section.settings.phone_title | default: 'Phone' }}</span>
+          <div class="contact-item__value">
+            <a href="tel:{{ section.settings.phone_number | replace: ' ', '' | replace: '-', '' }}" class="contact-item__link">
+              {{ section.settings.phone_number }}
+            </a>
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.show_hours and section.settings.hours_text != blank -%}
+        <div class="contact-item">
+          <span class="contact-item__label">{{ section.settings.hours_title | default: 'Hours' }}</span>
+          <div class="contact-item__value rte">{{ section.settings.hours_text }}</div>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.additional_info != blank -%}
+        <div class="contact-item contact-item--note">
+          <div class="contact-item__value rte">{{ section.settings.additional_info }}</div>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.cta_text != blank and section.settings.cta_link != blank -%}
+        <div class="contact-section__cta">
+          <a href="{{ section.settings.cta_link }}" class="button button--primary">
+            {{ section.settings.cta_text }}
+          </a>
+        </div>
+      {%- endif -%}
+
+    </div>
+
+    {%- if show_image -%}
+      <div class="contact-section__image">
+        <div class="contact-section__image-inner">
+          {%- if section.settings.contact_image != blank -%}
+            {%- if section.settings.image_link != blank -%}
+              <a href="{{ section.settings.image_link }}" target="_blank" rel="noopener noreferrer" class="contact-section__image-link">
+                {{ section.settings.contact_image | image_url: width: 1200 | image_tag:
+                  class: 'contact-section__img',
+                  alt: section.settings.contact_image.alt | default: section.settings.image_alt_text,
+                  widths: '400, 600, 800, 1000, 1200',
+                  loading: 'lazy'
+                }}
+              </a>
+            {%- else -%}
+              {{ section.settings.contact_image | image_url: width: 1200 | image_tag:
+                class: 'contact-section__img',
+                alt: section.settings.contact_image.alt | default: section.settings.image_alt_text,
+                widths: '400, 600, 800, 1000, 1200',
+                loading: 'lazy'
+              }}
+            {%- endif -%}
+          {%- else -%}
+            {{ 'collection-apparel-1' | placeholder_svg_tag: 'contact-section__img placeholder-svg' }}
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+  </div>
+
+</div>
+
+{% stylesheet %}
+  .contact-section {
+    padding-block-start: var(--padding-block-start, 80px);
+    padding-block-end: var(--padding-block-end, 80px);
+  }
+
+  /* ── Eyebrow ─────────────────────────────── */
+  .contact-section__eyebrow {
+    margin: 0 0 1rem 0;
+    font-family: var(--contact-body-font);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    color: currentColor;
+  }
+
+  /* ── Heading ─────────────────────────────── */
+  .contact-section__heading {
+    margin: 0 0 1.5rem 0;
+    font-family: var(--contact-heading-font);
+    font-size: var(--contact-heading-size, 52px);
+    line-height: 1.1;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: currentColor;
+  }
+
+  /* ── Intro text ──────────────────────────── */
+  .contact-section__intro {
+    max-width: 560px;
+    font-family: var(--contact-body-font);
+    font-size: var(--contact-text-size, 16px);
+    line-height: 1.7;
+    opacity: 0.75;
+    margin-bottom: 3rem;
+    color: currentColor;
+  }
+
+  .contact-section__intro p {
+    margin: 0;
+  }
+
+  /* ── Body grid (details + map) ───────────── */
+  .contact-section__body {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--contact-column-gap, 60px);
+    align-items: start;
+  }
+
+  @media screen and (min-width: 750px) {
+    .contact-section--image-left .contact-section__body,
+    .contact-section--image-right .contact-section__body {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .contact-section--image-left .contact-section__image {
+      order: -1;
+    }
+  }
+
+  /* ── Contact items ───────────────────────── */
+  .contact-section__details {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .contact-item {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+    padding-block: 1.5rem;
+    border-top: 1px solid rgba(0, 0, 0, var(--contact-divider-opacity, 0.15));
+  }
+
+  .contact-item:last-of-type {
+    border-bottom: 1px solid rgba(0, 0, 0, var(--contact-divider-opacity, 0.15));
+  }
+
+  @media screen and (min-width: 750px) {
+    .contact-item {
+      grid-template-columns: 1fr 2fr;
+      gap: 1.5rem;
+      align-items: baseline;
+    }
+  }
+
+  .contact-item__label {
+    font-family: var(--contact-body-font);
+    font-size: var(--contact-label-font-size, 0.6875rem);
+    letter-spacing: var(--contact-label-letter-spacing, 0.12em);
+    text-transform: var(--contact-label-text-transform, uppercase);
+    opacity: 0.5;
+    color: currentColor;
+    padding-top: var(--contact-label-padding-top, 0.1rem);
+    font-weight: var(--contact-label-font-weight, 400);
+  }
+
+  .contact-item__value {
+    font-family: var(--contact-body-font);
+    font-size: var(--contact-text-size, 16px);
+    line-height: 1.65;
+    color: currentColor;
+  }
+
+  .contact-item__value p {
+    margin: 0;
+  }
+
+  .contact-item--note {
+    border-top: none;
+    padding-block-start: 1rem;
+  }
+
+  .contact-item--note .contact-item__value {
+    font-size: calc(var(--contact-text-size, 16px) - 1px);
+    opacity: 0.65;
+    font-style: italic;
+  }
+
+  /* ── Links — underline-on-hover ──────────── */
+  .contact-item__link {
+    color: currentColor;
+    text-decoration: none;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    transition: background-size 0.3s ease;
+  }
+
+  .contact-item__link:hover {
+    background-size: 100% 1px;
+  }
+
+  /* ── CTA ─────────────────────────────────── */
+  .contact-section__cta {
+    margin-top: 2.5rem;
+  }
+
+  /* ── Image ─────────────────────────────────── */
+  .contact-section__image-inner {
+    overflow: hidden;
+    height: var(--contact-image-height, 480px);
+    border-radius: var(--style-border-radius-cards, 8px);
+  }
+
+  .contact-section__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .contact-section--image-below .contact-section__image-inner {
+    height: var(--contact-image-height, 400px);
+  }
+
+  /* ── Mobile ──────────────────────────────── */
+  @media screen and (max-width: 749px) {
+    .contact-section {
+      padding-block-start: var(--padding-block-start-mobile, 60px);
+      padding-block-end: var(--padding-block-end-mobile, 60px);
+    }
+
+    .contact-section__heading {
+      font-size: var(--contact-heading-size-mobile, 32px);
+    }
+
+    .contact-section__intro {
+      font-size: var(--contact-text-size-mobile, 15px);
+      margin-bottom: 2rem;
+    }
+
+    .contact-item {
+      padding-block: 1.25rem;
+    }
+
+    .contact-item__value {
+      font-size: var(--contact-text-size-mobile, 15px);
+    }
+
+    .contact-section__image-inner {
+      height: 280px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Contact Section",
+  "tag": "section",
+  "class": "section-contact",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Get in Touch",
+      "info": "Small uppercase label above the heading"
+    },
+    {
+      "type": "text",
+      "id": "section_heading",
+      "label": "Heading",
+      "default": "Contact Palliser Ridge"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "richtext",
+      "id": "intro_text",
+      "label": "Intro text",
+      "default": "<p>We'd love to hear from you. Whether you're planning a visit, looking to purchase our wool products, or have a general enquiry — reach out anytime.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Address"
+    },
+    {
+      "type": "text",
+      "id": "address_title",
+      "label": "Label",
+      "default": "Find Us"
+    },
+    {
+      "type": "richtext",
+      "id": "address_text",
+      "label": "Address",
+      "default": "<p>226 Te Rata Road<br>RD2, Featherston 5772<br>New Zealand</p>"
+    },
+    {
+      "type": "url",
+      "id": "address_link",
+      "label": "Google Maps link",
+      "info": "Makes the address a clickable directions link"
+    },
+    {
+      "type": "header",
+      "content": "Email"
+    },
+    {
+      "type": "text",
+      "id": "email_title",
+      "label": "Label",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "email_address",
+      "label": "Email address",
+      "default": "info@palliserridge.co.nz"
+    },
+    {
+      "type": "header",
+      "content": "Phone"
+    },
+    {
+      "type": "text",
+      "id": "phone_title",
+      "label": "Label",
+      "default": "Phone"
+    },
+    {
+      "type": "text",
+      "id": "phone_number",
+      "label": "Phone number",
+      "default": "+64 27 503 5145"
+    },
+    {
+      "type": "header",
+      "content": "Business Hours"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hours",
+      "label": "Show hours",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "hours_title",
+      "label": "Label",
+      "default": "Hours"
+    },
+    {
+      "type": "richtext",
+      "id": "hours_text",
+      "label": "Hours",
+      "default": "<p>Monday – Friday: 9:00am – 5:00pm<br>Weekends: By appointment</p>"
+    },
+    {
+      "type": "header",
+      "content": "Additional Note"
+    },
+    {
+      "type": "richtext",
+      "id": "additional_info",
+      "label": "Additional note",
+      "info": "Optional small note below the contact details (italic, subtle)"
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show image",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "contact_image",
+      "label": "Contact image"
+    },
+    {
+      "type": "text",
+      "id": "image_alt_text",
+      "label": "Image alt text",
+      "info": "Describe the image for accessibility"
+    },
+    {
+      "type": "url",
+      "id": "image_link",
+      "label": "Image link (optional)"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        { "value": "left",  "label": "Left of details"  },
+        { "value": "right", "label": "Right of details" },
+        { "value": "below", "label": "Below details"    }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Image height",
+      "min": 280,
+      "max": 700,
+      "step": 20,
+      "unit": "px",
+      "default": 480
+    },
+    {
+      "type": "header",
+      "content": "Label Style"
+    },
+    {
+      "type": "range",
+      "id": "label_font_size",
+      "label": "Label font size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+    {
+      "type": "range",
+      "id": "label_letter_spacing",
+      "label": "Label letter spacing",
+      "min": 0,
+      "max": 0.5,
+      "step": 0.1,
+      "unit": "em",
+      "default": 0.1
+    },
+    {
+      "type": "select",
+      "id": "label_text_transform",
+      "label": "Label text transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "lowercase", "label": "Lowercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "range",
+      "id": "label_padding_top",
+      "label": "Label padding top",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "select",
+      "id": "label_font_weight",
+      "label": "Label font weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "options": [
+        { "value": "heading", "label": "Heading" },
+        { "value": "body",    "label": "Body"    },
+        { "value": "accent",  "label": "Accent"  }
+      ],
+      "default": "heading"
+    },
+    {
+      "type": "select",
+      "id": "body_font",
+      "label": "Body font",
+      "options": [
+        { "value": "heading", "label": "Heading" },
+        { "value": "body",    "label": "Body"    },
+        { "value": "accent",  "label": "Accent"  }
+      ],
+      "default": "body"
+    },
+    {
+      "type": "header",
+      "content": "Typography Sizes — Desktop"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "label": "Heading size",
+      "min": 24,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "text_size_desktop",
+      "label": "Value text size",
+      "min": 13,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Typography Sizes — Mobile"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "text_size_mobile",
+      "label": "Value text size",
+      "min": 13,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "divider_opacity",
+      "label": "Divider line opacity",
+      "min": 0.1,
+      "max": 0.5,
+      "step": 0.1,
+      "default": 0.1,
+      "info": "Opacity of the horizontal lines between contact rows"
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Gap between details and map",
+      "min": 20,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "header",
+      "content": "Padding — Desktop"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Padding — Mobile"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start-mobile",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end-mobile",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Section",
+      "category": "Palliser Ridge Sections",
+      "settings": {
+        "eyebrow": "Get in Touch",
+        "section_heading": "Contact Palliser Ridge",
+        "heading_tag": "h2",
+        "address_title": "Find Us",
+        "email_title": "Email",
+        "email_address": "info@palliserridge.co.nz",
+        "phone_title": "Phone",
+        "phone_number": "+64 27 503 5145",
+        "show_hours": false,
+        "show_image": true,
+        "image_position": "right",
+        "image_height": 480,
+        "color_scheme": "scheme-1",
+        "section_width": "page-width",
+        "heading_size_desktop": 52,
+        "heading_size_mobile": 32,
+        "text_size_desktop": 16,
+        "text_size_mobile": 15,
+        "divider_opacity": 0.1,
+        "column_gap": 60,
+        "padding-block-start": 80,
+        "padding-block-end": 80,
+        "padding-block-start-mobile": 60,
+        "padding-block-end-mobile": 60
+      }
+    }
+  ]
+}
+{% endschema %}
