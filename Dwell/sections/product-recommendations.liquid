@@ -24,6 +24,9 @@
   endcapture
 %}
 
+{% render 'quick-add-styles' %}
+{% render 'quick-add-modal-styles' %}
+{% render 'product-badges-styles' %}
 <product-recommendations
   id="product-recommendations-{{ section.id }}"
   class="product-recommendations"
@@ -33,6 +36,7 @@
   data-intent="{{ section.settings.recommendation_type }}"
   data-testid="product-recommendations-section"
   data-recommendations-performed="{{ recommendations.performed }}"
+  data-hydration-key="product-recommendations-{{ section.id }}"
   {{ section.shopify_attributes }}
 >
   <div class="section-background color-{{ section.settings.color_scheme }}"></div>
@@ -49,36 +53,8 @@
       {%  render 'spacing-style', settings: section.settings %}
       {%  render 'gap-style', value: section.settings.gap %}
       {{ styles }}
-      --product-recommendations-section-heading-size-mobile: {{ section.settings.section_heading_font_size_mobile }}px;
     "
-    data-testid="product-recommendations-section"
   >
-    <style>
-      .product-recommendations .product-card .price {
-        font-weight: {{ section.settings.product_price_font_weight_mobile }} !important;
-      }
-      @media screen and (max-width: 749px) {
-        {% if section.settings.padding-block-start-mobile != blank %}
-          #shopify-section-{{ section.id }} .section {
-            padding-block-start: var(--padding-block-start-mobile) !important;
-          }
-        {% endif %}
-        {% if section.settings.padding-block-end-mobile != blank %}
-          #shopify-section-{{ section.id }} .section {
-            padding-block-end: var(--padding-block-end-mobile) !important;
-          }
-        {% endif %}
-        .product-recommendations .text-block h2 {
-          font-size: var(--product-recommendations-section-heading-size-mobile, 36px) !important;
-        }
-        .product-recommendations .product-card .text-block p {
-          font-size: {{ section.settings.product_title_font_size_mobile }}px !important;
-        }
-        .product-recommendations .product-card .price {
-          font-size: {{ section.settings.product_price_font_size_mobile }}px !important;
-        }
-      }
-    </style>
     <div class="section-resource-list__content">
       {% content_for 'blocks' %}
     </div>
@@ -192,27 +168,6 @@
         {% endfor %}
       </div>
     {%- endif -%}
-
-    {% if section.settings.show_button and section.settings.button_text != blank %}
-      {% assign button_margin_style = '' %}
-      {% if section.settings.button_alignment == 'center' %}
-        {% assign button_margin_style = 'margin: 0 auto;' %}
-      {% elsif section.settings.button_alignment == 'flex-end' %}
-        {% assign button_margin_style = 'margin-left: auto; margin-right: 0;' %}
-      {% else %}
-        {% assign button_margin_style = 'margin-left: 0; margin-right: auto;' %}
-      {% endif %}
-
-      <div class="product-recommendations__button-wrapper" style="margin-top: {{ section.settings.gap }}px;">
-        <a
-          href="{{ section.settings.button_url }}"
-          class="button button--{{ section.settings.button_style }}"
-          style="{{ button_margin_style }}"
-        >
-          {{ section.settings.button_text }}
-        </a>
-      </div>
-    {% endif %}
   </div>
 </product-recommendations>
 
@@ -477,157 +432,7 @@
       "max": 100,
       "step": 1,
       "unit": "px",
-      "default": 48
-    },
-    {
-      "type": "header",
-      "content": "Mobile Spacing"
-    },
-    {
-      "type": "range",
-      "id": "padding-block-start-mobile",
-      "label": "Top (Mobile)",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 24
-    },
-    {
-      "type": "range",
-      "id": "padding-block-end-mobile",
-      "label": "Bottom (Mobile)",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 24
-    },
-    {
-      "type": "header",
-      "content": "Button"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_button",
-      "label": "Show button",
-      "default": false
-    },
-    {
-      "type": "text",
-      "id": "button_text",
-      "label": "Button text",
-      "default": "View All Products"
-    },
-    {
-      "type": "url",
-      "id": "button_url",
-      "label": "Button link",
-      "default": "/collections/all"
-    },
-    {
-      "type": "select",
-      "id": "button_alignment",
-      "label": "Button alignment",
-      "options": [
-        {
-          "value": "flex-start",
-          "label": "Left"
-        },
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "flex-end",
-          "label": "Right"
-        }
-      ],
-      "default": "center",
-      "visible_if": "{{ section.settings.show_button }}"
-    },
-    {
-      "type": "select",
-      "id": "button_style",
-      "label": "Button style",
-      "options": [
-        {
-          "value": "primary",
-          "label": "Primary"
-        },
-        {
-          "value": "secondary",
-          "label": "Secondary"
-        },
-        {
-          "value": "outline",
-          "label": "Outline"
-        }
-      ],
-      "default": "primary",
-      "visible_if": "{{ section.settings.show_button }}"
-    },
-    {
-      "type": "header",
-      "content": "Typography"
-    },
-    {
-      "type": "range",
-      "id": "section_heading_font_size_mobile",
-      "label": "Section heading size (Mobile)",
-      "min": 24,
-      "max": 48,
-      "step": 1,
-      "unit": "px",
-      "default": 36,
-      "info": "Font size for main section heading on mobile devices"
-    },
-    {
-      "type": "header",
-      "content": "Product Card Typography - Mobile"
-    },
-    {
-      "type": "range",
-      "id": "product_title_font_size_mobile",
-      "label": "Product title size (Mobile)",
-      "min": 12,
-      "max": 24,
-      "step": 1,
-      "unit": "px",
-      "default": 16,
-      "info": "Font size for product title on mobile devices"
-    },
-    {
-      "type": "range",
-      "id": "product_price_font_size_mobile",
-      "label": "Product price size (Mobile)",
-      "min": 12,
-      "max": 20,
-      "step": 1,
-      "unit": "px",
-      "default": 16,
-      "info": "Font size for product price on mobile devices"
-    },
-    {
-      "type": "select",
-      "id": "product_price_font_weight_mobile",
-      "label": "Product price weight (Mobile)",
-      "options": [
-        {
-          "value": "normal",
-          "label": "Normal"
-        },
-        {
-          "value": "600",
-          "label": "Semi Bold"
-        },
-        {
-          "value": "bold",
-          "label": "Bold"
-        }
-      ],
-      "default": "bold",
-      "info": "Font weight for product price on mobile devices"
+      "default": 0
     }
   ],
   "presets": [
@@ -657,7 +462,8 @@
           "type": "text",
           "name": "t:names.header",
           "settings": {
-            "text": "t:html_defaults.related_product"
+            "text": "t:html_defaults.related_product",
+            "type_preset": "h3"
           }
         },
         "static-product-card": {
@@ -690,7 +496,7 @@
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
-                "type_preset": "rte",
+                "type_preset": "paragraph",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
                 "line_height": "normal",

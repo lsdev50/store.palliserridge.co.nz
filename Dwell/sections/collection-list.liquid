@@ -27,41 +27,9 @@
   style="
     {% render 'spacing-style', settings: section.settings %}
     {% render 'gap-style', value: section.settings.gap %}
-    --resource-list-align: {{ section.settings.align }};
-    --collection-list-title-font-size-mobile: {{ section.settings.title_font_size_mobile }}px;
   "
   data-testid="collection-list"
 >
-  {% if section.settings['padding-block-start-mobile'] != blank
-    or section.settings['padding-block-end-mobile'] != blank
-    or section.settings['padding-inline-start-mobile'] != blank
-    or section.settings['padding-inline-end-mobile'] != blank
-  %}
-    <style>
-      @media screen and (max-width: 749px) {
-        #shopify-section-{{ section.id }} .section {
-          {% if section.settings.padding-block-start-mobile != blank %}
-            padding-block-start: var(--padding-block-start-mobile) !important;
-          {% endif %}
-          {% if section.settings.padding-block-end-mobile != blank %}
-            padding-block-end: var(--padding-block-end-mobile) !important;
-          {% endif %}
-          {% if section.settings.padding-inline-start-mobile != blank %}
-            padding-inline-start: var(--padding-inline-start-mobile) !important;
-          {% endif %}
-          {% if section.settings.padding-inline-end-mobile != blank %}
-            padding-inline-end: var(--padding-inline-end-mobile) !important;
-          {% endif %}
-        }
-        #shopify-section-{{ section.id }} .resource-list__item:last-child {
-          padding-right: 15px;
-        }
-        #shopify-section-{{ section.id }} .text-block h2 {
-          font-size: var(--collection-list-title-font-size-mobile, 36px) !important;
-        }
-      }
-    </style>
-  {% endif %}
   <div class="section-resource-list__content">
     {%- content_for 'blocks' -%}
   </div>
@@ -354,34 +322,6 @@
       "default": 12
     },
     {
-      "type": "select",
-      "id": "align",
-      "label": "Align",
-      "options": [
-        {
-          "value": "baseline",
-          "label": "Baseline"
-        },
-        {
-          "value": "stretch",
-          "label": "Stretch"
-        },
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "start",
-          "label": "Start"
-        },
-        {
-          "value": "end",
-          "label": "End"
-        }
-      ],
-      "default": "baseline"
-    },
-    {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "t:settings.color_scheme",
@@ -410,81 +350,6 @@
       "step": 1,
       "unit": "px",
       "default": 0
-    },
-    {
-      "type": "range",
-      "id": "padding-inline-start",
-      "label": "Left",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "padding-inline-end",
-      "label": "Right",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "padding-block-start-mobile",
-      "label": "Top (Mobile)",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 24
-    },
-    {
-      "type": "range",
-      "id": "padding-block-end-mobile",
-      "label": "Bottom (Mobile)",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 24
-    },
-    {
-      "type": "range",
-      "id": "padding-inline-start-mobile",
-      "label": "Left (Mobile)",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "padding-inline-end-mobile",
-      "label": "Right (Mobile)",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "header",
-      "content": "Typography - Mobile"
-    },
-    {
-      "type": "range",
-      "id": "title_font_size_mobile",
-      "label": "Title size (Mobile)",
-      "min": 24,
-      "max": 60,
-      "step": 1,
-      "unit": "px",
-      "default": 36,
-      "info": "Font size for main title on mobile devices"
     }
   ],
   "presets": [
@@ -1020,52 +885,3 @@
   ]
 }
 {% endschema %}
-
-{% stylesheet %}
-  .collection-card {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .collection-card__image-wrapper {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .collection-card__icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition:
-      border-radius 0.3s ease,
-      opacity 0.3s ease;
-    pointer-events: none;
-    z-index: 10;
-    opacity: 0;
-  }
-
-  .collection-card:hover .overlay,
-  .collection-card:hover .collection-card__icon,
-  .collection-card:hover .collection-card__image .overlay {
-    opacity: 1;
-    border-radius: 0;
-  }
-
-  .collection-card__icon-media {
-    width: 100%;
-    height: 100%;
-  }
-
-  .resource-list--grid {
-    align-items: var(--resource-list-align, baseline);
-  }
-
-  .collection-card__image .overlay {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-{% endstylesheet %}

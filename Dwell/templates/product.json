@@ -524,18 +524,7 @@
         "gap": 30,
         "color_scheme": "scheme-1",
         "padding-block-start": 50,
-        "padding-block-end": 50,
-        "padding-block-start-mobile": 25,
-        "padding-block-end-mobile": 25,
-        "show_button": false,
-        "button_text": "View All Products",
-        "button_url": "shopify://collections/all",
-        "button_alignment": "center",
-        "button_style": "primary",
-        "section_heading_font_size_mobile": 36,
-        "product_title_font_size_mobile": 16,
-        "product_price_font_size_mobile": 16,
-        "product_price_font_weight_mobile": "bold"
+        "padding-block-end": 50
       }
     }
   },

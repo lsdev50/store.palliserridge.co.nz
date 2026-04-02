@@ -54,6 +54,10 @@ class CartItemsComponent extends Component {
       this.#handleCartUpdate,
     );
     document.removeEventListener(
+      ThemeEvents.discountUpdate,
+      this.handleDiscountUpdate,
+    );
+    document.removeEventListener(
       ThemeEvents.quantitySelectorUpdate,
       this.#debouncedOnChange,
     );
@@ -218,7 +222,7 @@ class CartItemsComponent extends Component {
         morphSection(
           this.sectionId,
           parsedResponseText.sections[this.sectionId],
-          this.isDrawer ? "hydration" : "full",
+          { mode: this.isDrawer ? "hydration" : "full" },
         );
 
         this.#updateCartQuantitySelectorButtonStates();

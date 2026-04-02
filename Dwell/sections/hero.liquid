@@ -456,8 +456,6 @@
     --hero-border-width: {{ section.settings.border_width }}px;
     --hero-border-opacity: {{ section.settings.border_opacity }}%;
     --blur-opacity: {{ section.settings.reflection_opacity | divided_by: 100.0 }};
-    --hero-title-font-size-mobile: {{ section.settings.title_font_size_mobile }}px;
-    --hero-text-font-size-mobile: {{ section.settings.text_font_size_mobile }}px;
     {% if section.settings.section_height == 'custom' %}
       --hero-min-height: {{ section.settings.section_height_custom }}svh;
     {% elsif section.settings.section_height == "full-screen" %}
@@ -742,16 +740,6 @@
         right: 0;
         left: auto;
       }
-    }
-  }
-
-  /* Mobile typography overrides */
-  @media screen and (max-width: 749px) {
-    .hero .text-block h2 {
-      font-size: var(--hero-title-font-size-mobile, 36px) !important;
-    }
-    .hero .text-block p {
-      font-size: var(--hero-text-font-size-mobile, 16px) !important;
     }
   }
 {% endstylesheet %}
@@ -1248,32 +1236,6 @@
       "step": 1,
       "unit": "px",
       "default": 0
-    },
-    {
-      "type": "header",
-      "content": "Typography - Mobile"
-    },
-    {
-      "type": "range",
-      "id": "title_font_size_mobile",
-      "label": "Title size (Mobile)",
-      "min": 24,
-      "max": 60,
-      "step": 1,
-      "unit": "px",
-      "default": 36,
-      "info": "Font size for hero title on mobile devices"
-    },
-    {
-      "type": "range",
-      "id": "text_font_size_mobile",
-      "label": "Text size (Mobile)",
-      "min": 12,
-      "max": 24,
-      "step": 1,
-      "unit": "px",
-      "default": 16,
-      "info": "Font size for hero text on mobile devices"
     }
   ],
   "presets": [
@@ -1284,7 +1246,7 @@
         "text_1": {
           "type": "text",
           "settings": {
-            "text": "t:html_defaults.new_arrivals_h1",
+            "text": "t:html_defaults.new_arrivals_h2",
             "type_preset": "h1",
             "max_width": "narrow"
           }
@@ -1435,9 +1397,9 @@
               "blocks": {
                 "text_intro": {
                   "type": "text",
-                  "name": "t:names.heading",
+                  "name": "t:names.text",
                   "settings": {
-                    "text": "t:html_defaults.introducing_h2",
+                    "text": "t:html_defaults.introducing_p",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "left",
@@ -1462,7 +1424,7 @@
                   "type": "text",
                   "name": "t:names.heading",
                   "settings": {
-                    "text": "t:html_defaults.new_arrivals_h1",
+                    "text": "t:html_defaults.new_arrivals_h2",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "left",

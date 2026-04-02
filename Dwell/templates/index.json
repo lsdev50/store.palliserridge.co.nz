@@ -66,9 +66,7 @@
         "blurred_reflection": false,
         "reflection_opacity": 75,
         "padding-block-start": 40,
-        "padding-block-end": 40,
-        "title_font_size_mobile": 36,
-        "text_font_size_mobile": 16
+        "padding-block-end": 40
       }
     },
     "welcome_WUqx9w": {
@@ -209,14 +207,7 @@
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
-            "border_radius": 0,
-            "show_icon": true,
-            "icon_type": "image",
-            "icon": "arrow",
-            "image_upload": "shopify://shop_images/arrow.svg",
-            "icon_width": 50,
-            "icon_background_color": "#5e4d44",
-            "icon_border_radius": 50
+            "border_radius": 0
           },
           "blocks": {
             "collection_title_btkpww": {
@@ -292,17 +283,9 @@
         "icons_shape": "circle",
         "section_width": "full-width",
         "gap": 50,
-        "align": "baseline",
         "color_scheme": "scheme-1",
         "padding-block-start": 50,
-        "padding-block-end": 100,
-        "padding-inline-start": 100,
-        "padding-inline-end": 100,
-        "padding-block-start-mobile": 50,
-        "padding-block-end-mobile": 100,
-        "padding-inline-start-mobile": 20,
-        "padding-inline-end-mobile": 0,
-        "title_font_size_mobile": 36
+        "padding-block-end": 100
       }
     },
     "hero_DNPz8i": {
@@ -409,9 +392,7 @@
         "blurred_reflection": false,
         "reflection_opacity": 75,
         "padding-block-start": 50,
-        "padding-block-end": 50,
-        "title_font_size_mobile": 36,
-        "text_font_size_mobile": 16
+        "padding-block-end": 50
       }
     },
     "product_recommendations_R3yQ4G": {
@@ -553,18 +534,7 @@
         "gap": 28,
         "color_scheme": "scheme-1",
         "padding-block-start": 100,
-        "padding-block-end": 50,
-        "padding-block-start-mobile": 100,
-        "padding-block-end-mobile": 50,
-        "show_button": false,
-        "button_text": "View All Products",
-        "button_url": "shopify://collections/all",
-        "button_alignment": "center",
-        "button_style": "primary",
-        "section_heading_font_size_mobile": 36,
-        "product_title_font_size_mobile": 16,
-        "product_price_font_size_mobile": 16,
-        "product_price_font_weight_mobile": "bold"
+        "padding-block-end": 50
       }
     },
     "range_boxes_xYMPEW": {

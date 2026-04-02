@@ -20,7 +20,8 @@
       {% render 'header-drawer',
         linklist: block_settings.menu,
         data_header_drawer_type: 'mobile-drawer',
-        block: block
+        block: block,
+        section: section
       %}
     </div>
 
@@ -28,7 +29,7 @@
     {% if block_settings.navigation_bar == true %}
       <div
         class="menu-list menu-list--mobile{% if transparent == blank %} color-{{ block_settings.color_scheme_navigation_bar }}{% endif %}"
-        style="--menu-horizontal-gap: 15px; --mobile-nav-margin: auto; --font-size-mobile: {{ block_settings.font_size_mobile }}px;"
+        style="--menu-horizontal-gap: 15px; --mobile-nav-margin: auto;"
         data-hydration-key="header-menu-mobile-navigation-bar"
       >
         <div class="menu-list__scroll-container">
@@ -162,7 +163,7 @@
         <nav
           class="menu-list"
           aria-label="{{ 'accessibility.header_navigation_label' | t }}"
-          style="{% render 'menu-font-styles', settings: block_settings %}"
+          style="{% render 'menu-font-styles', settings: block_settings, menu_type: 'mega_menu' %}"
         >
           {% assign class = 'overflow-menu' | append: color_scheme_classes %}
           {% render 'overflow-list',
@@ -289,6 +290,20 @@
     cursor: pointer;
     height: 100%;
     margin-block: 0;
+
+    &::after {
+      content: '';
+      position: absolute;
+      display: none;
+      top: var(--header-padding);
+      height: var(--box-height);
+      left: 0;
+      right: 0;
+    }
+
+    &[data-safety-box='true']::after {
+      display: block;
+    }
 
     &:hover,
     &:focus {
@@ -890,21 +905,6 @@
       "label": "t:settings.expand_first_group",
       "default": false,
       "visible_if": "{{ block.settings.drawer_accordion == true }}"
-    },
-    {
-      "type": "header",
-      "content": "Typography Sizes - Mobile"
-    },
-    {
-      "type": "range",
-      "id": "font_size_mobile",
-      "label": "Font size (Mobile)",
-      "min": 12,
-      "max": 24,
-      "step": 1,
-      "unit": "px",
-      "default": 16,
-      "info": "Font size for menu items on mobile devices"
     },
     {
       "type": "checkbox",
