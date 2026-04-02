@@ -1,11 +1,17 @@
 {%- liquid
-  assign column_ratio_class = 'welcome-section--' | append: section.settings.column_ratio
-  assign content_alignment_class = 'welcome-section--content-' | append: section.settings.content_alignment
-  assign vertical_alignment_class = 'welcome-section--vertical-' | append: section.settings.vertical_alignment
-  assign column_direction_class = 'welcome-section--direction-' | append: section.settings.column_direction
+  assign column_ratio_class = 'image-text-boxed--' | append: section.settings.column_ratio
+  assign content_alignment_class = 'image-text-boxed--content-' | append: section.settings.content_alignment
+  assign vertical_alignment_class = 'image-text-boxed--vertical-' | append: section.settings.vertical_alignment
+  assign column_direction_class = 'image-text-boxed--direction-' | append: section.settings.column_direction
+  assign image_height_class = 'image-text-boxed--height-' | append: section.settings.image_height_mode
+  if section.settings.mobile_reverse_columns
+    assign mobile_reverse_class = ' image-text-boxed--mobile-reverse'
+  else
+    assign mobile_reverse_class = ''
+  endif
 
   if section.settings.enable_animation
-    assign animation_class = ' welcome-section--animated'
+    assign animation_class = ' image-text-boxed--animated'
   else
     assign animation_class = ''
   endif
@@ -13,33 +19,33 @@
 
 {% capture left_content %}
   {% if section.settings.left_image != blank %}
-    <div class="welcome-section__image-wrapper">
-      {{ section.settings.left_image | image_url: width: 800 | image_tag: widths: '400, 600, 800, 1000', sizes: '(max-width: 749px) 100vw, (max-width: 1024px) 50vw, 40vw', class: 'welcome-section__image', alt: 'Left column image', loading: 'lazy' }}
+    <div class="image-text-boxed__image-wrapper">
+      {{ section.settings.left_image | image_url: width: 800 | image_tag: widths: '400, 600, 800, 1000', sizes: '(max-width: 749px) 100vw, (max-width: 1024px) 50vw, 40vw', class: 'image-text-boxed__image', alt: 'Left column image', loading: 'lazy' }}
     </div>
   {% endif %}
 {% endcapture %}
 
 {% capture right_content %}
   {% if section.settings.main_heading != blank %}
-    <h2 class="welcome-section__heading {{ section.settings.heading_size }}">
+    <h2 class="image-text-boxed__heading {{ section.settings.heading_size }}">
       {{ section.settings.main_heading }}
     </h2>
   {% endif %}
 
   {% if section.settings.sub_heading != blank %}
-    <h3 class="welcome-section__sub-heading">
+    <h3 class="image-text-boxed__sub-heading">
       {{ section.settings.sub_heading }}
     </h3>
   {% endif %}
 
   {% if section.settings.main_text != blank %}
-    <div class="welcome-section__description rte">
+    <div class="image-text-boxed__description rte">
       {{ section.settings.main_text }}
     </div>
   {% endif %}
 
   {% if section.settings.button_text != blank and section.settings.button_link != blank %}
-    <a href="{{ section.settings.button_link }}" class="welcome-section__button button button--primary">
+    <a href="{{ section.settings.button_link }}" class="image-text-boxed__button button button--primary">
       {{ section.settings.button_text }}
     </a>
   {% endif %}
@@ -47,14 +53,14 @@
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <div
-  class="section section--{{ section.settings.section_width }} welcome-section color-{{ section.settings.color_scheme }} spacing-style {{ column_ratio_class }} {{ content_alignment_class }} {{ vertical_alignment_class }} {{ column_direction_class }}{{ animation_class }}"
+  class="section section--{{ section.settings.section_width }} image-text-boxed color-{{ section.settings.color_scheme }} spacing-style {{ column_ratio_class }} {{ content_alignment_class }} {{ vertical_alignment_class }} {{ column_direction_class }} {{ image_height_class }}{{ mobile_reverse_class }}{{ animation_class }}"
   style="
     {% render 'spacing-padding', settings: section.settings %}
     {% render 'border-override', settings: section.settings %}
     --column-gap: {{ section.settings.column_gap }}px;
     --image-border-radius: {{ section.settings.image_border_radius }}px;
-    --welcome-heading-font: var(--font-{{ section.settings.heading_font }}--family, var(--font-heading-family));
-    --welcome-text-font: var(--font-{{ section.settings.text_font }}--family, var(--font-body-family));
+    --image-text-heading-font: var(--font-{{ section.settings.heading_font }}--family, var(--font-heading-family));
+    --image-text-font: var(--font-{{ section.settings.text_font }}--family, var(--font-body-family));
     --animation-delay: {{ section.settings.animation_delay }};
     --padding-block-start: {{ section.settings.padding-block-start }}px;
     --padding-block-end: {{ section.settings.padding-block-end }}px;
@@ -66,24 +72,32 @@
     --subheading-size-mobile: {{ section.settings.subheading_size_mobile }}px;
     --text-size-desktop: {{ section.settings.text_size_desktop }}px;
     --text-size-mobile: {{ section.settings.text_size_mobile }}px;
+    --column-bg-color: {{ section.settings.column_background_color }};
+    --column-padding: {{ section.settings.column_padding }}px;
+    --column-padding-mobile: {{ section.settings.column_padding_mobile }}px;
+    --column-border-radius: {{ section.settings.column_border_radius }}px;
+    --image-aspect-ratio: {% if section.settings.image_aspect_ratio == 'square' %}1 / 1{% elsif section.settings.image_aspect_ratio == 'landscape' %}16 / 9{% elsif section.settings.image_aspect_ratio == 'portrait' %}9 / 16{% else %}auto{% endif %};
+    --image-object-fit: {{ section.settings.image_object_fit }};
+    --image-min-height: {{ section.settings.image_min_height }}px;
+    --image-max-height: {{ section.settings.image_max_height }}px;
   "
   {% if request.visual_preview_mode %}
     data-shopify-visual-preview
   {% endif %}
 >
-  <div class="welcome-section__grid">
+  <div class="image-text-boxed__grid">
     {%- if section.settings.column_position == 'left' -%}
-      <div class="welcome-section__column welcome-section__column--left">
+      <div class="image-text-boxed__column image-text-boxed__column--image">
         {{ left_content }}
       </div>
-      <div class="welcome-section__column welcome-section__column--right">
+      <div class="image-text-boxed__column image-text-boxed__column--content image-text-boxed__column--boxed">
         {{ right_content }}
       </div>
     {%- else -%}
-      <div class="welcome-section__column welcome-section__column--left">
+      <div class="image-text-boxed__column image-text-boxed__column--content image-text-boxed__column--boxed">
         {{ right_content }}
       </div>
-      <div class="welcome-section__column welcome-section__column--right">
+      <div class="image-text-boxed__column image-text-boxed__column--image">
         {{ left_content }}
       </div>
     {%- endif -%}
@@ -91,132 +105,173 @@
 </div>
 
 {% stylesheet %}
-  .welcome-section {
+  .image-text-boxed {
     --animation-duration: 0.8s;
   }
 
-  .welcome-section__grid {
+  .image-text-boxed__grid {
     display: grid;
     gap: var(--column-gap);
+    align-items: stretch;
+  }
+
+  .image-text-boxed--vertical-top .image-text-boxed__grid {
     align-items: start;
   }
 
-  .welcome-section--vertical-top .welcome-section__grid {
-    align-items: start;
-  }
-
-  .welcome-section--vertical-center .welcome-section__grid {
+  .image-text-boxed--vertical-center .image-text-boxed__grid {
     align-items: center;
   }
 
-  .welcome-section--vertical-bottom .welcome-section__grid {
+  .image-text-boxed--vertical-bottom .image-text-boxed__grid {
     align-items: end;
   }
 
-  .welcome-section--equal .welcome-section__grid {
+  .image-text-boxed--equal .image-text-boxed__grid {
     grid-template-columns: 1fr 1fr;
   }
 
-  .welcome-section--wide-left .welcome-section__grid {
+  .image-text-boxed--wide-left .image-text-boxed__grid {
     grid-template-columns: 3fr 2fr;
   }
 
-  .welcome-section--wide-right .welcome-section__grid {
+  .image-text-boxed--wide-right .image-text-boxed__grid {
     grid-template-columns: 2fr 3fr;
   }
 
-  .welcome-section--direction-reverse .welcome-section__grid {
+  .image-text-boxed--direction-reverse .image-text-boxed__grid {
     grid-template-columns: 1fr 1fr;
   }
 
-  .welcome-section--direction-reverse.welcome-section--wide-left .welcome-section__grid {
+  .image-text-boxed--direction-reverse.image-text-boxed--wide-left .image-text-boxed__grid {
     grid-template-columns: 2fr 3fr;
   }
 
-  .welcome-section--direction-reverse.welcome-section--wide-right .welcome-section__grid {
+  .image-text-boxed--direction-reverse.image-text-boxed--wide-right .image-text-boxed__grid {
     grid-template-columns: 3fr 2fr;
   }
 
-  .welcome-section--content-left .welcome-section__column--left {
+  .image-text-boxed--content-left .image-text-boxed__column--left {
     text-align: left;
   }
 
-  .welcome-section--content-center .welcome-section__column--left {
+  .image-text-boxed--content-center .image-text-boxed__column--left {
     text-align: center;
   }
 
-  .welcome-section--content-right .welcome-section__column--left {
+  .image-text-boxed--content-right .image-text-boxed__column--left {
     text-align: right;
   }
 
-  .welcome-section__column {
+  .image-text-boxed__column {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    width: 100%;
   }
 
-  .welcome-section__image-wrapper {
+  .image-text-boxed__column--image {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .image-text-boxed__column--boxed {
+    background-color: var(--column-bg-color);
+    padding: var(--column-padding);
+    border-radius: var(--column-border-radius);
+    box-sizing: border-box;
+  }
+
+  .image-text-boxed__image-wrapper {
     position: relative;
     overflow: hidden;
     border-radius: var(--image-border-radius);
+    aspect-ratio: var(--image-aspect-ratio);
+    min-height: var(--image-min-height);
+    max-height: var(--image-max-height);
+    flex: 1;
+    width: 100%;
   }
 
-  .welcome-section__image {
+  .image-text-boxed--height-match .image-text-boxed__image-wrapper {
+    aspect-ratio: auto !important;
+    position: absolute;
+    inset: 0;
+    flex: 0 0 auto;
+    min-height: 0;
+    max-height: none;
+    overflow: hidden;
+  }
+
+  .image-text-boxed--height-match .image-text-boxed__column--image {
+    position: relative;
+    align-self: stretch;
+  }
+
+  .image-text-boxed__image {
+    display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: var(--image-object-fit);
     transition: transform 0.4s ease;
   }
 
-  .welcome-section__image-wrapper:hover .welcome-section__image {
+  .image-text-boxed--height-match .image-text-boxed__image {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+
+  .image-text-boxed__image-wrapper:hover .image-text-boxed__image {
     transform: scale(1.03);
   }
 
-  .welcome-section__text,
-  .welcome-section__description,
-  .welcome-section .welcome-section__text,
-  .welcome-section .welcome-section__description {
+  .image-text-boxed__text,
+  .image-text-boxed__description,
+  .image-text-boxed .image-text-boxed__text,
+  .image-text-boxed .image-text-boxed__description {
     font-size: var(--text-size-desktop, 16px) !important;
     line-height: 1.6;
-    font-family: var(--welcome-text-font);
-    font-weight: var(--welcome-text-font-weight);
+    font-family: var(--image-text-font);
+    font-weight: var(--image-text-font-weight);
     color: currentColor;
   }
 
   /* Target RTE content specifically */
-  .welcome-section .rte,
-  .welcome-section .rte p,
-  .welcome-section .welcome-section__text.rte,
-  .welcome-section .welcome-section__description.rte {
+  .image-text-boxed .rte,
+  .image-text-boxed .rte p,
+  .image-text-boxed .image-text-boxed__text.rte,
+  .image-text-boxed .image-text-boxed__description.rte {
     font-size: var(--text-size-desktop, 16px) !important;
   }
 
-  .welcome-section__heading,
-  .welcome-section .welcome-section__heading {
+  .image-text-boxed__heading,
+  .image-text-boxed .image-text-boxed__heading {
     margin: 0 0 0.5rem 0;
-    font-family: var(--welcome-heading-font);
+    font-family: var(--image-text-heading-font);
     font-size: var(--heading-size-desktop, 48px) !important;
     line-height: 1.2;
     color: currentColor;
   }
 
-  .welcome-section__sub-heading,
-  .welcome-section .welcome-section__sub-heading {
+  .image-text-boxed__sub-heading,
+  .image-text-boxed .image-text-boxed__sub-heading {
     margin: 0;
     opacity: 0.8;
-    font-family: var(--welcome-text-font);
+    font-family: var(--image-text-font);
     font-size: var(--subheading-size-desktop, 18px) !important;
     line-height: 1.3;
     color: currentColor;
   }
 
-  .welcome-section__button {
+  .image-text-boxed__button {
     display: inline-flex;
     align-self: flex-start;
     margin-top: 0.5rem;
   }
 
-  .welcome-section--animated {
+  .image-text-boxed--animated {
     opacity: 0;
     animation: fadeInUp var(--animation-duration) ease forwards;
     animation-delay: var(--animation-delay);
@@ -234,63 +289,94 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .welcome-section--animated {
+    .image-text-boxed--animated {
       animation: none;
       opacity: 1;
     }
   }
 
   @media screen and (max-width: 749px) {
-    .welcome-section__grid {
+    .image-text-boxed__grid {
       grid-template-columns: 1fr;
       gap: 2rem;
     }
 
-    .welcome-section__column {
+    .image-text-boxed__column {
       gap: 1rem;
     }
 
-    .welcome-section--equal .welcome-section__grid,
-    .welcome-section--content-left .welcome-section__grid,
-    .welcome-section--content-right .welcome-section__grid {
+    .image-text-boxed__column--boxed {
+      padding: var(--column-padding-mobile, var(--column-padding));
+    }
+
+    .image-text-boxed--mobile-reverse .image-text-boxed__column--image {
+      order: -1;
+    }
+
+    .image-text-boxed--mobile-reverse .image-text-boxed__column--content {
+      order: 1;
+    }
+
+    .image-text-boxed--height-match .image-text-boxed__column--image {
+      position: static;
+      min-height: 0;
+    }
+
+    .image-text-boxed--height-match .image-text-boxed__image-wrapper {
+      position: relative;
+      inset: auto;
+      min-height: var(--image-min-height);
+      max-height: var(--image-max-height);
+      flex: 1 1 auto;
+    }
+
+    .image-text-boxed--equal .image-text-boxed__grid,
+    .image-text-boxed--content-left .image-text-boxed__grid,
+    .image-text-boxed--content-right .image-text-boxed__grid {
       grid-template-columns: 1fr;
     }
 
-    .welcome-section--content-left .welcome-section__button,
-    .welcome-section--content-center .welcome-section__button,
-    .welcome-section--content-right .welcome-section__button {
+    .image-text-boxed--content-left .image-text-boxed__button,
+    .image-text-boxed--content-center .image-text-boxed__button,
+    .image-text-boxed--content-right .image-text-boxed__button {
       align-self: flex-start;
     }
 
+    .image-text-boxed__button {
+      width: 100%;
+      justify-content: center;
+      text-align: center;
+    }
+
     /* Mobile padding overrides */
-    .welcome-section {
+    .image-text-boxed {
       padding-block-start: var(--padding-block-start-mobile, var(--padding-block-start, 50px));
       padding-block-end: var(--padding-block-end-mobile, var(--padding-block-end, 50px));
     }
 
     /* Mobile typography overrides */
-    .welcome-section__heading,
-    .welcome-section .welcome-section__heading {
+    .image-text-boxed__heading,
+    .image-text-boxed .image-text-boxed__heading {
       font-size: var(--heading-size-mobile, 32px) !important;
     }
 
-    .welcome-section__sub-heading,
-    .welcome-section .welcome-section__sub-heading {
+    .image-text-boxed__sub-heading,
+    .image-text-boxed .image-text-boxed__sub-heading {
       font-size: var(--subheading-size-mobile, 16px) !important;
     }
 
-    .welcome-section__text,
-    .welcome-section__description,
-    .welcome-section .welcome-section__text,
-    .welcome-section .welcome-section__description {
+    .image-text-boxed__text,
+    .image-text-boxed__description,
+    .image-text-boxed .image-text-boxed__text,
+    .image-text-boxed .image-text-boxed__description {
       font-size: var(--text-size-mobile, 14px) !important;
     }
 
     /* Target RTE content on mobile */
-    .welcome-section .rte,
-    .welcome-section .rte p,
-    .welcome-section .welcome-section__text.rte,
-    .welcome-section .welcome-section__description.rte {
+    .image-text-boxed .rte,
+    .image-text-boxed .rte p,
+    .image-text-boxed .image-text-boxed__text.rte,
+    .image-text-boxed .image-text-boxed__description.rte {
       font-size: var(--text-size-mobile, 14px) !important;
     }
   }
@@ -298,9 +384,9 @@
 
 {% schema %}
 {
-  "name": "Welcome section",
+  "name": "Image with Text Boxed",
   "tag": "section",
-  "class": "section-welcome",
+  "class": "section-image-text-boxed",
   "settings": [
     {
       "type": "header",
@@ -310,7 +396,7 @@
       "type": "text",
       "id": "main_heading",
       "label": "Main heading",
-      "default": "Welcome To Palliser Ridge"
+      "default": "From Farm to Fibre Fully Traceable Wool"
     },
     {
       "type": "select",
@@ -328,19 +414,19 @@
       "type": "text",
       "id": "sub_heading",
       "label": "Subheading",
-      "default": "Pirinoa | South Wairarapa | New Zealand"
+      "default": "Subheading text"
     },
     {
       "type": "richtext",
       "id": "main_text",
       "label": "Description",
-      "default": "<p>Experience the authentic New Zealand rural lifestyle at our working sheep station. Our family has been farming this land for generations, and we're passionate about sharing our story with visitors.</p><p>From rolling hills to pristine coastline, discover the beauty of rural New Zealand.</p>"
+      "default": "<p>Palliser Ridge shears 6,000 ewes twice a year, in February and August, and 9,000 lambs once a year, in February.</p><p>This equates to roughly 40,000kgs of wool coming off our flock annually.</p><p>Our aim is to sell our fibre in a traceable way directly to customers, manufacturers and businesses and follow the entire process to ensure we're proud of the end products created.</p>"
     },
     {
       "type": "text",
       "id": "button_text",
       "label": "Button text",
-      "default": "Contact us"
+      "default": "Explore Our Wool"
     },
     {
       "type": "url",
@@ -354,18 +440,80 @@
     {
       "type": "image_picker",
       "id": "left_image",
-      "label": "Left column image"
+      "label": "Column image"
+    },
+    {
+      "type": "select",
+      "id": "image_height_mode",
+      "label": "Image height",
+      "options": [
+        { "value": "auto", "label": "Auto (with aspect ratio)" },
+        { "value": "match", "label": "Match content height" }
+      ],
+      "default": "auto",
+      "info": "Choose 'Match content height' to make the image fill the full height of the content column"
+    },
+    {
+      "type": "select",
+      "id": "image_aspect_ratio",
+      "label": "Image aspect ratio",
+      "options": [
+        { "value": "square", "label": "Square (1:1)" },
+        { "value": "landscape", "label": "Landscape (16:9)" },
+        { "value": "portrait", "label": "Portrait (9:16)" },
+        { "value": "auto", "label": "Auto" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "select",
+      "id": "image_object_fit",
+      "label": "Image object-fit",
+      "options": [
+        { "value": "cover", "label": "Cover (fill and crop)" },
+        { "value": "contain", "label": "Contain (fit whole image)" }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "range",
+      "id": "image_min_height",
+      "label": "Image min height",
+      "min": 0,
+      "max": 1200,
+      "step": 20,
+      "unit": "px",
+      "default": 400,
+      "info": "Sets the minimum image height"
+    },
+    {
+      "type": "range",
+      "id": "image_max_height",
+      "label": "Image max height",
+      "min": 100,
+      "max": 1200,
+      "step": 20,
+      "unit": "px",
+      "default": 600,
+      "info": "Sets the maximum image height"
     },
     {
       "type": "select",
       "id": "column_position",
-      "label": "Column position",
+      "label": "Image position",
       "options": [
         { "value": "left", "label": "Left" },
         { "value": "right", "label": "Right" }
       ],
       "default": "left",
-      "info": "Swap position of content columns"
+      "info": "Swap position of image and content"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_reverse_columns",
+      "label": "Show image first on mobile",
+      "default": false,
+      "info": "Keeps desktop layout unchanged and moves the image above the content on mobile"
     },
     {
       "type": "header",
@@ -526,6 +674,49 @@
     },
     {
       "type": "header",
+      "content": "Column Box Styling"
+    },
+    {
+      "type": "color",
+      "id": "column_background_color",
+      "label": "Column background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "column_padding",
+      "label": "Column padding",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 30,
+      "info": "Inner padding for each column box"
+    },
+    {
+      "type": "range",
+      "id": "column_padding_mobile",
+      "label": "Column padding (mobile)",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 20,
+      "info": "Inner padding for each column box on mobile devices"
+    },
+    {
+      "type": "range",
+      "id": "column_border_radius",
+      "label": "Column border radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 8,
+      "info": "Rounded corner radius for column boxes"
+    },
+    {
+      "type": "header",
       "content": "Style"
     },
     {
@@ -613,13 +804,13 @@
   ],
   "presets": [
     {
-      "name": "Welcome",
+      "name": "Image with Text Boxed",
       "category": "Palliser Ridge Sections",
       "settings": {
-        "main_heading": "Welcome To Palliser Ridge",
+        "main_heading": "From Farm to Fibre Fully Traceable Wool",
         "heading_size": "h2",
-        "sub_heading": "Pirinoa | South Wairarapa | New Zealand",
-        "button_text": "Contact us",
+        "sub_heading": "Subheading text",
+        "button_text": "Explore Our Wool",
         "vertical_alignment": "top",
         "content_alignment": "left",
         "column_gap": 40,
@@ -633,7 +824,17 @@
         "subheading_size_mobile": 16,
         "text_size_desktop": 16,
         "text_size_mobile": 14,
-        "image_border_radius": 8
+        "image_border_radius": 8,
+        "image_aspect_ratio": "auto",
+        "image_object_fit": "cover",
+        "image_min_height": 400,
+        "image_max_height": 600,
+        "image_height_mode": "auto",
+        "mobile_reverse_columns": false,
+        "column_background_color": "#ffffff",
+        "column_padding": 30,
+        "column_padding_mobile": 20,
+        "column_border_radius": 8
       }
     }
   ]
