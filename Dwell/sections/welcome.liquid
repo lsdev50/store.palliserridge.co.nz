@@ -72,12 +72,21 @@
   {% endif %}
 >
   <div class="welcome-section__grid">
-    <div class="welcome-section__column welcome-section__column--left">
-      {{ left_content }}
-    </div>
-    <div class="welcome-section__column welcome-section__column--right">
-      {{ right_content }}
-    </div>
+    {%- if section.settings.column_position == 'left' -%}
+      <div class="welcome-section__column welcome-section__column--left">
+        {{ left_content }}
+      </div>
+      <div class="welcome-section__column welcome-section__column--right">
+        {{ right_content }}
+      </div>
+    {%- else -%}
+      <div class="welcome-section__column welcome-section__column--left">
+        {{ right_content }}
+      </div>
+      <div class="welcome-section__column welcome-section__column--right">
+        {{ left_content }}
+      </div>
+    {%- endif -%}
   </div>
 </div>
 
@@ -348,6 +357,17 @@
       "label": "Left column image"
     },
     {
+      "type": "select",
+      "id": "column_position",
+      "label": "Column position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left",
+      "info": "Swap position of content columns"
+    },
+    {
       "type": "header",
       "content": "Layout"
     },
@@ -603,7 +623,6 @@
         "vertical_alignment": "top",
         "content_alignment": "left",
         "column_gap": 40,
-        "image_border_radius": 8,
         "color_scheme": "scheme-1",
         "section_width": "page-width",
         "enable_animation": true,
@@ -613,7 +632,8 @@
         "subheading_size_desktop": 18,
         "subheading_size_mobile": 16,
         "text_size_desktop": 16,
-        "text_size_mobile": 14
+        "text_size_mobile": 14,
+        "image_border_radius": 8
       }
     }
   ]
