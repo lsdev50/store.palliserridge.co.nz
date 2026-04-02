@@ -41,7 +41,6 @@
   "
   data-section-id="{{ section.id }}"
 >
-
   {%- if section.settings.eyebrow != blank -%}
     <p class="contact-section__eyebrow">{{ section.settings.eyebrow | escape }}</p>
   {%- endif -%}
@@ -57,15 +56,18 @@
   {%- endif -%}
 
   <div class="contact-section__body">
-
     <div class="contact-section__details">
-
       {%- if section.settings.address_text != blank -%}
         <div class="contact-item">
           <span class="contact-item__label">{{ section.settings.address_title | default: 'Find Us' }}</span>
           <div class="contact-item__value rte">
             {%- if section.settings.address_link != blank -%}
-              <a href="{{ section.settings.address_link }}" target="_blank" rel="noopener noreferrer" class="contact-item__link">
+              <a
+                href="{{ section.settings.address_link }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="contact-item__link"
+              >
                 {{ section.settings.address_text }}
               </a>
             {%- else -%}
@@ -90,7 +92,10 @@
         <div class="contact-item">
           <span class="contact-item__label">{{ section.settings.phone_title | default: 'Phone' }}</span>
           <div class="contact-item__value">
-            <a href="tel:{{ section.settings.phone_number | replace: ' ', '' | replace: '-', '' }}" class="contact-item__link">
+            <a
+              href="tel:{{ section.settings.phone_number | replace: ' ', '' | replace: '-', '' }}"
+              class="contact-item__link"
+            >
               {{ section.settings.phone_number }}
             </a>
           </div>
@@ -117,7 +122,6 @@
           </a>
         </div>
       {%- endif -%}
-
     </div>
 
     {%- if show_image -%}
@@ -125,20 +129,25 @@
         <div class="contact-section__image-inner">
           {%- if section.settings.contact_image != blank -%}
             {%- if section.settings.image_link != blank -%}
-              <a href="{{ section.settings.image_link }}" target="_blank" rel="noopener noreferrer" class="contact-section__image-link">
-                {{ section.settings.contact_image | image_url: width: 1200 | image_tag:
-                  class: 'contact-section__img',
-                  alt: section.settings.contact_image.alt | default: section.settings.image_alt_text,
-                  widths: '400, 600, 800, 1000, 1200',
-                  loading: 'lazy'
+              <a
+                href="{{ section.settings.image_link }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="contact-section__image-link"
+              >
+                {{
+                  section.settings.contact_image
+                  | image_url: width: 1200
+                  | image_tag: class: 'contact-section__img', alt: section.settings.contact_image.alt
+                  | default: section.settings.image_alt_text, widths: '400, 600, 800, 1000, 1200', loading: 'lazy'
                 }}
               </a>
             {%- else -%}
-              {{ section.settings.contact_image | image_url: width: 1200 | image_tag:
-                class: 'contact-section__img',
-                alt: section.settings.contact_image.alt | default: section.settings.image_alt_text,
-                widths: '400, 600, 800, 1000, 1200',
-                loading: 'lazy'
+              {{
+                section.settings.contact_image
+                | image_url: width: 1200
+                | image_tag: class: 'contact-section__img', alt: section.settings.contact_image.alt
+                | default: section.settings.image_alt_text, widths: '400, 600, 800, 1000, 1200', loading: 'lazy'
               }}
             {%- endif -%}
           {%- else -%}
@@ -147,9 +156,7 @@
         </div>
       </div>
     {%- endif -%}
-
   </div>
-
 </div>
 
 {% stylesheet %}
@@ -512,9 +519,9 @@
       "id": "image_position",
       "label": "Image position",
       "options": [
-        { "value": "left",  "label": "Left of details"  },
+        { "value": "left", "label": "Left of details" },
         { "value": "right", "label": "Right of details" },
-        { "value": "below", "label": "Below details"    }
+        { "value": "below", "label": "Below details" }
       ],
       "default": "right"
     },
@@ -596,8 +603,8 @@
       "label": "Heading font",
       "options": [
         { "value": "heading", "label": "Heading" },
-        { "value": "body",    "label": "Body"    },
-        { "value": "accent",  "label": "Accent"  }
+        { "value": "body", "label": "Body" },
+        { "value": "accent", "label": "Accent" }
       ],
       "default": "heading"
     },
@@ -607,8 +614,8 @@
       "label": "Body font",
       "options": [
         { "value": "heading", "label": "Heading" },
-        { "value": "body",    "label": "Body"    },
-        { "value": "accent",  "label": "Accent"  }
+        { "value": "body", "label": "Body" },
+        { "value": "accent", "label": "Accent" }
       ],
       "default": "body"
     },
