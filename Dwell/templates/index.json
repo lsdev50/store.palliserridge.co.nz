@@ -80,6 +80,7 @@
         "button_text": "Contact us",
         "button_link": "shopify://pages/contact",
         "left_image": "shopify://shop_images/shawls.png",
+        "column_position": "left",
         "column_ratio": "equal",
         "content_alignment": "left",
         "vertical_alignment": "center",
@@ -100,7 +101,7 @@
         "padding-block-start": 100,
         "padding-block-end": 50,
         "padding-block-start-mobile": 50,
-        "padding-block-end-mobile": 50
+        "padding-block-end-mobile": 30
       }
     },
     "collection_list_PHweEy": {
@@ -207,7 +208,14 @@
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
-            "border_radius": 0
+            "border_radius": 0,
+            "show_icon": true,
+            "icon_type": "image",
+            "icon": "arrow",
+            "image_upload": "shopify://shop_images/arrow.svg",
+            "icon_width": 50,
+            "icon_background_color": "#5e4d44",
+            "icon_border_radius": 50
           },
           "blocks": {
             "collection_title_btkpww": {
@@ -271,21 +279,30 @@
           "palliser-ridge-baby-range"
         ],
         "layout_type": "grid",
-        "carousel_on_mobile": true,
         "columns": 5,
+        "max_collections": 4,
+        "columns_gap": 20,
+        "rows_gap": 20,
+        "bento_gap": 8,
+        "carousel_on_mobile": true,
         "mobile_columns": "2",
         "mobile_card_size": "60cqw",
-        "columns_gap": 20,
-        "bento_gap": 8,
-        "rows_gap": 20,
-        "max_collections": 4,
         "icons_style": "arrow",
         "icons_shape": "circle",
         "section_width": "full-width",
-        "gap": 50,
         "color_scheme": "scheme-1",
+        "gap": 50,
+        "align": "baseline",
+        "title_font_size": 36,
+        "title_font_size_mobile": 36,
         "padding-block-start": 50,
-        "padding-block-end": 100
+        "padding-block-end": 100,
+        "padding-inline-start": 50,
+        "padding-inline-end": 50,
+        "padding-block-start-mobile": 30,
+        "padding-block-end-mobile": 50,
+        "padding-inline-start-mobile": 15,
+        "padding-inline-end-mobile": 0
       }
     },
     "hero_DNPz8i": {
@@ -601,75 +618,11 @@
             "card_padding_vertical_mobile": 24,
             "card_padding_horizontal_mobile": 24
           }
-        },
-        "box_NVEGGP": {
-          "type": "box",
-          "settings": {
-            "title": "WOOLSHED EVENTS",
-            "text": "<p>Visit the Hub of our Business</p>",
-            "button_label": "Read More",
-            "button_link": "",
-            "button_open_new_tab": false,
-            "button_style": "link",
-            "card_color_scheme": "scheme-2",
-            "enable_background_image": true,
-            "background_image": "shopify://shop_images/events.png",
-            "background_size": "cover",
-            "background_position": "center",
-            "card_padding_vertical": 48,
-            "card_padding_horizontal": 48,
-            "card_border_style": "solid",
-            "card_border_width": 1,
-            "card_border_radius": 10,
-            "card_shadow": false,
-            "heading_size": "h4",
-            "text_font_size": 18,
-            "heading_font_size_mobile": 28,
-            "text_font_size_mobile": 14,
-            "content_alignment": "center",
-            "vertical_alignment": "center",
-            "min_height": 450,
-            "card_padding_vertical_mobile": 24,
-            "card_padding_horizontal_mobile": 24
-          }
-        },
-        "box_kkjnUR": {
-          "type": "box",
-          "settings": {
-            "title": "LAMB’S WOOL YARN",
-            "text": "<p>Natural Fibre Produced & Processed Locally</p>",
-            "button_label": "Read More",
-            "button_link": "",
-            "button_open_new_tab": false,
-            "button_style": "link",
-            "card_color_scheme": "scheme-2",
-            "enable_background_image": true,
-            "background_image": "shopify://shop_images/yarn_3923adc0-d9d0-4918-88f0-50971ae104e7.png",
-            "background_size": "cover",
-            "background_position": "center",
-            "card_padding_vertical": 48,
-            "card_padding_horizontal": 48,
-            "card_border_style": "solid",
-            "card_border_width": 1,
-            "card_border_radius": 10,
-            "card_shadow": false,
-            "heading_size": "h4",
-            "text_font_size": 18,
-            "heading_font_size_mobile": 28,
-            "text_font_size_mobile": 14,
-            "content_alignment": "center",
-            "vertical_alignment": "center",
-            "min_height": 450,
-            "card_padding_vertical_mobile": 24,
-            "card_padding_horizontal_mobile": 24
-          }
         }
       },
       "block_order": [
         "box_PmDqDp",
-        "box_RxdXQc",
-        "box_NVEGGP",
-        "box_kkjnUR"
+        "box_RxdXQc"
       ],
       "name": "Range Boxes",
       "settings": {
