@@ -208,7 +208,7 @@
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
-            "border_radius": 0,
+            "border_radius": 8,
             "show_icon": true,
             "icon_type": "image",
             "icon": "arrow",
@@ -256,7 +256,7 @@
                 "border": "none",
                 "border_width": 1,
                 "border_opacity": 100,
-                "border_radius": 0
+                "border_radius": 8
               },
               "blocks": {}
             }
@@ -272,11 +272,11 @@
       "name": "t:names.collections_carousel",
       "settings": {
         "collection_list": [
-          "palliser-ridge-yarn",
-          "palliser-ridge-beanies-scarves",
-          "palliser-ridge-yarn-1",
-          "palliser-ridge-luxury-blankets",
-          "palliser-ridge-baby-range"
+          "palliser-ridge-gift-pack-collection",
+          "palliser-ridge-lambs-wool-hand-knit-collection",
+          "the-kindly-dyer-naturally-dyed-yarns",
+          "palliser-ridge-raw-wool-collection",
+          "trfc-merchandise"
         ],
         "layout_type": "grid",
         "columns": 5,
@@ -292,7 +292,7 @@
         "section_width": "full-width",
         "color_scheme": "scheme-1",
         "gap": 50,
-        "align": "baseline",
+        "align": "start",
         "title_font_size": 36,
         "title_font_size_mobile": 36,
         "padding-block-start": 50,
@@ -536,7 +536,7 @@
       ],
       "name": "t:names.product_recommendations",
       "settings": {
-        "product": "palliser-ridge-lambs-wool-throw-plain-herringbone",
+        "product": "luxury-lambs-wool-blanket-large-twill-check",
         "recommendation_type": "related",
         "layout_type": "grid",
         "carousel_on_mobile": false,

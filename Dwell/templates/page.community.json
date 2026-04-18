@@ -92,7 +92,7 @@
         "sub_heading": "",
         "main_text": "<p>The Palliser Ridge Lambs Wool is perfect for outer garments such as blankets, cardigans and jerseys, scarves, hats and much more.<br/><br/>Partnerships with fellow New Zealand businesses such as New Zealand Natural Clothing and Inter-Weave have allowed for larger scale production of both fashion and home based wool products.<br/><br/>See <a href=\"https://store.palliserridge.co.nz/?_gl=1*hs868l*_ga*MTk1MzUzMTEyMy4xNzQzODIzNzgw*_ga_D2NB0C4XCC*czE3NTM2NDYyNzQkbzUkZzEkdDE3NTM2NDYyODUkajQ5JGwwJGgw\" target=\"_blank\">here </a>for our range. </p>",
         "button_text": "Browse Wool Products",
-        "button_link": "#",
+        "button_link": "shopify://collections/palliser-ridge-luxury-throw-collection",
         "left_image": "shopify://shop_images/wool.jpg",
         "image_height_mode": "match",
         "image_aspect_ratio": "auto",

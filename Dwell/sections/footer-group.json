@@ -246,18 +246,6 @@
                           },
                           "blocks": {}
                         },
-                        "icon_Gpzynx": {
-                          "type": "icon",
-                          "name": "t:names.icon",
-                          "settings": {
-                            "icon": "price_tag",
-                            "image_upload": "shopify://shop_images/google-plus.svg",
-                            "width": 28,
-                            "link": "https://plus.google.com/share?url=",
-                            "open_in_new_tab": true
-                          },
-                          "blocks": {}
-                        },
                         "icon_A7HXjg": {
                           "type": "icon",
                           "name": "t:names.icon",
@@ -285,7 +273,6 @@
                       },
                       "block_order": [
                         "icon_NDNyXe",
-                        "icon_Gpzynx",
                         "icon_A7HXjg",
                         "icon_fDjjee"
                       ]
