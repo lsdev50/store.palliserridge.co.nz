@@ -1,0 +1,188 @@
+{%- liquid
+  assign show_breadcrumbs = section.settings.enable_breadcrumbs
+  assign current_title = ''
+  assign intermediate_title = ''
+  assign intermediate_url = ''
+  assign root_label = section.settings.home_label | strip
+
+  if root_label == blank
+    assign root_label = 'Home'
+  endif
+
+  if request.page_type == 'index' or request.page_type == 'password' or request.page_type == '404'
+    assign show_breadcrumbs = false
+  endif
+
+  case request.page_type
+    when 'collection'
+      assign current_title = collection.title
+    when 'product'
+      assign current_title = product.title
+
+      if collection
+        assign intermediate_title = collection.title
+        assign intermediate_url = collection.url
+      elsif product.collections.size == 1
+        assign intermediate_title = product.collections.first.title
+        assign intermediate_url = product.collections.first.url
+      endif
+    when 'article'
+      assign current_title = article.title
+      assign intermediate_title = blog.title
+      assign intermediate_url = blog.url
+    when 'blog'
+      assign current_title = blog.title
+    when 'page'
+      assign current_title = page.title
+    when 'list-collections'
+      assign current_title = page_title
+    when 'search'
+      assign current_title = 'Search'
+    when 'cart'
+      assign current_title = 'Cart'
+    else
+      assign current_title = page_title
+  endcase
+
+  if current_title == blank
+    assign show_breadcrumbs = false
+  endif
+
+  assign root_url = routes.root_url | prepend: request.origin
+%}
+
+{%- if show_breadcrumbs -%}
+  <div class="section-background color-{{ section.settings.color_scheme }}"></div>
+  <div class="section color-{{ section.settings.color_scheme }}">
+    <div
+      class="
+        spacing-style
+        layout-panel-flex
+        layout-panel-flex--column
+        section-content-wrapper
+        mobile-column
+      "
+      style="
+        {% render 'layout-panel-style', settings: section.settings %}
+        {% render 'spacing-style', settings: section.settings %}
+      "
+    >
+      <nav
+        class="rte"
+        aria-label="Breadcrumb"
+      >
+        <p>
+          <a href="{{ routes.root_url }}">{{ root_label | escape }}</a>
+
+          {%- if intermediate_title != blank and intermediate_url != blank -%}
+            <span aria-hidden="true"> / </span>
+            <a href="{{ intermediate_url }}">{{ intermediate_title | escape }}</a>
+          {%- endif -%}
+
+          <span aria-hidden="true"> / </span>
+          <span aria-current="page">{{ current_title | escape }}</span>
+        </p>
+      </nav>
+    </div>
+  </div>
+
+  {%- if section.settings.enable_structured_data -%}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": {{ root_label | json }},
+            "item": {{ root_url | json }}
+          }{%- if intermediate_title != blank and intermediate_url != blank -%},
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": {{ intermediate_title | json }},
+            "item": {{ intermediate_url | prepend: request.origin | json }}
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": {{ current_title | json }}
+          }
+          {%- else -%},
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": {{ current_title | json }}
+          }
+          {%- endif -%}
+        ]
+      }
+    </script>
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Breadcrumbs",
+  "class": "section-wrapper",
+  "enabled_on": {
+    "templates": ["product", "collection", "article", "blog", "page", "search", "cart", "list-collections"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_breadcrumbs",
+      "label": "Show breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_structured_data",
+      "label": "Output BreadcrumbList structured data",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "home_label",
+      "label": "Home label",
+      "default": "Home"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    }
+  ],
+  "presets": [
+    {
+      "name": "Breadcrumbs"
+    }
+  ]
+}
+{% endschema %}
