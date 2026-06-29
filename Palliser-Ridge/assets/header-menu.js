@@ -280,6 +280,15 @@ class HeaderMenu extends Component {
     this.#setFullOpenHeaderHeight(finalHeight);
     this.style.setProperty("--submenu-opacity", "1");
     this.#startPointerTracking(item, previouslyActiveItem);
+      // Position submenu under active menu item
+      const activeLink = item.closest('.menu-list__list-item');
+      const submenuEl = findSubmenu(item);
+      if (activeLink && submenuEl) {
+        const rect = activeLink.getBoundingClientRect();
+        const headerRect = this.headerComponent.getBoundingClientRect();
+        submenuEl.style.setProperty('left', `${rect.left - headerRect.left}px`);
+        submenuEl.style.removeProperty('width');
+      }
   };
 
   /**

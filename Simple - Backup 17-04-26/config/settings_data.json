@@ -76,11 +76,11 @@
         "settings": {
           "logo": "shopify://shop_images/logo-01_7d74bde1-a0a4-416a-9d4b-b3459a64a822.jpg",
           "logo_max_width": 250,
-          "show_announcement": true,
+          "show_announcement": false,
           "home_page_only": true,
           "announcement_text": "🧶 Buy 2 or more Lamb's Wool Yarn & save 20% — The Great Winter Cast On Promotion, ends 1 May!",
           "announcement_link": "",
-          "tagline": "<p><strong>Yarn Sale On!<br/>Discount Applied Automatically At Cart.</strong></p>"
+          "tagline": ""
         }
       },
       "sidebar": {

@@ -102,6 +102,34 @@
         </div>
       {%- endif -%}
 
+      {%- if section.settings.phone_number_2 != blank -%}
+        <div class="contact-item">
+          <span class="contact-item__label">{{ section.settings.phone_title_2 | default: 'Phone' }}</span>
+          <div class="contact-item__value">
+            <a
+              href="tel:{{ section.settings.phone_number_2 | replace: ' ', '' | replace: '-', '' }}"
+              class="contact-item__link"
+            >
+              {{ section.settings.phone_number_2 }}
+            </a>
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.phone_number_3 != blank -%}
+        <div class="contact-item">
+          <span class="contact-item__label">{{ section.settings.phone_title_3 | default: 'Phone' }}</span>
+          <div class="contact-item__value">
+            <a
+              href="tel:{{ section.settings.phone_number_3 | replace: ' ', '' | replace: '-', '' }}"
+              class="contact-item__link"
+            >
+              {{ section.settings.phone_number_3 }}
+            </a>
+          </div>
+        </div>
+      {%- endif -%}
+
       {%- if section.settings.show_hours and section.settings.hours_text != blank -%}
         <div class="contact-item">
           <span class="contact-item__label">{{ section.settings.hours_title | default: 'Hours' }}</span>
@@ -439,6 +467,30 @@
     {
       "type": "text",
       "id": "phone_number",
+      "label": "Phone number",
+      "default": "+64 27 503 5145"
+    },
+    {
+      "type": "text",
+      "id": "phone_title_2",
+      "label": "Label",
+      "default": "Phone"
+    },
+    {
+      "type": "text",
+      "id": "phone_number_2",
+      "label": "Second phone number",
+      "default": "+64 27 503 5145"
+    },
+    {
+      "type": "text",
+      "id": "phone_title_3",
+      "label": "Label",
+      "default": "Phone"
+    },
+    {
+      "type": "text",
+      "id": "phone_number_3",
       "label": "Phone number",
       "default": "+64 27 503 5145"
     },
